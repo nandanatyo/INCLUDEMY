@@ -1,5 +1,7 @@
 package model
 
+import "github.com/google/uuid"
+
 type JobReq struct {
 	JobName   string `json:"job_name" gorm:"type:varchar(255);not null;"`
 	Company   string `json:"company" gorm:"type:varchar(255);not null;"`
@@ -11,4 +13,9 @@ type JobReq struct {
 	JobExp    string `json:"job_exp" gorm:"type:varchar(255);not null;"`
 	JobEdu    string `json:"job_edu" gorm:"type:varchar(255);not null;"`
 	JobLink   string `json:"job_link" gorm:"type:varchar(255);not null;"`
+}
+
+type JobSearch struct {
+	ID    uuid.UUID `json:"id"`
+	Title string    `json:"title"`
 }

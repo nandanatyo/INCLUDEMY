@@ -26,7 +26,7 @@ func NewService(repository *repository.Repository, bcrypt bcrypt.Interface, jwt 
 		SubcourseService:         NewSubcourseService(repository.SubcourseRepository, repository.CourseRepository, supabase),
 		UserJoinService:          NewUserJoinService(repository.UserJoinRepository, repository.UserRepository, repository.CourseRepository),
 		UserSubcourseService:     NewUserSubcourseService(repository.UserSubcourseRepository, repository.UserRepository, repository.SubcourseRepository),
-		JobService:               NewJobService(repository.JobRepository),
+		JobService:               NewJobService(repository.JobRepository, supabase),
 		ApplicantService:         NewApplicantService(repository.ApplicantRepository),
 		SertificationService:     NewSertificationService(repository.SertificationRepository, supabase),
 		SertificationUserService: NewSertificationUserService(repository.SertificationRepository, repository.UserRepository, repository.SertificationUserRepository),
