@@ -92,7 +92,7 @@ func (r *Rest) UploadSertifPhoto(ctx *gin.Context) {
 
 	parsedSertifID, err := uuid.Parse(sertifID)
 	if err != nil {
-		response.Error(ctx, http.StatusBadRequest, "Invalid subcourseID format", err)
+		response.Error(ctx, http.StatusBadRequest, "Invalid sertifID format", err)
 		return
 	}
 

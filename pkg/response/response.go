@@ -34,8 +34,6 @@ var (
 	ErrMismatchPassword      = &CustomError{Code: 400, Message: "Password mismatch"}
 	ErrCourseNotFound        = &CustomError{Code: 404, Message: "Course not found"}
 	ErrSertificationNotFound = &CustomError{Code: 404, Message: "Sertification not found"}
-
-	// Add more as needed
 )
 
 func Success(ctx *gin.Context, code int, message string, data any) {

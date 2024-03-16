@@ -29,9 +29,9 @@ func (r *Rest) DeleteUserJoinCourse(ctx *gin.Context) {
 	userjoincourseID := ctx.Param("id")
 	err := r.service.UserJoinService.DeleteUserJoinCourse(userjoincourseID)
 	if err != nil {
-		response.Error(ctx, http.StatusNotFound, "Failed to delete user", err)
+		response.Error(ctx, http.StatusNotFound, "Failed to delete user-join", err)
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, "Success to delete user", nil)
+	response.Success(ctx, http.StatusOK, "Success to delete user-join", nil)
 }

@@ -47,7 +47,6 @@ func (r *Rest) GetCourseByTitleOrID(ctx *gin.Context) {
 
 	course, err := r.service.CourseService.GetCourseByTitleOrID(searchParam)
 	if err != nil {
-		// Handle errors, such as course not found
 		response.Error(ctx, http.StatusNotFound, "Failed to find course", err)
 		return
 	}
@@ -102,13 +101,13 @@ func (r *Rest) UploadCoursePhoto(ctx *gin.Context) {
 
 	courseID := ctx.PostForm("course_id")
 	if courseID == "" {
-		response.Error(ctx, http.StatusBadRequest, "subcourse_id is required", errors.New("subcourse_id is required"))
+		response.Error(ctx, http.StatusBadRequest, "subcourse_id is required", errors.New("course_id is required"))
 		return
 	}
 
 	parsedCourseID, err := uuid.Parse(courseID)
 	if err != nil {
-		response.Error(ctx, http.StatusBadRequest, "Invalid subcourseID format", err)
+		response.Error(ctx, http.StatusBadRequest, "Invalid courseID format", err)
 		return
 	}
 

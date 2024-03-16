@@ -29,9 +29,9 @@ func (r *Rest) DeleteSertificationUser(ctx *gin.Context) {
 	sertifUserID := ctx.Param("id")
 	err := r.service.SertificationUserService.DeleteSertificationUser(sertifUserID)
 	if err != nil {
-		response.Error(ctx, http.StatusNotFound, "Failed to delete user", err)
+		response.Error(ctx, http.StatusNotFound, "Failed to delete sertification", err)
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, "Success to delete user", nil)
+	response.Success(ctx, http.StatusOK, "Success to delete sertification", nil)
 }
