@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"fmt"
 	"includemy/internal/service"
 	"includemy/pkg/middleware"
 	"os"
@@ -79,6 +80,8 @@ func (r *Rest) MountEndpoints() {
 
 func (r *Rest) Run() {
 	port := os.Getenv("PORT")
-	//127.0.0.1: 8080
-	r.router.Run(port)
+	if port == "" {
+		port = "5000"
+	}
+	r.router.Run(fmt.Sprintf(":%s", port))
 }
