@@ -17,7 +17,7 @@ import (
 
 type ICourseService interface {
 	CreateCourse(courseReq *model.CourseReq) (*entity.Course, error)
-	GetCourseByTitleOrID(param model.CourseNameSearch) ([]*entity.Course, error)
+	GetCourseByAny(param model.CourseSearch) ([]*entity.Course, error)
 	DeleteCourse(id string) error
 	GetSubcourseWithinCourse(temp model.CourseGet) (entity.Course, error)
 	UpdateCourse(id string, modifyCourse *model.CourseReq) (*entity.Course, error)
@@ -49,6 +49,7 @@ func (cs *CourseService) CreateCourse(courseReq *model.CourseReq) (*entity.Cours
 		HowManyCourse:  courseReq.HowManyCourse,
 		Tags:           courseReq.Tags,
 		About:          courseReq.About,
+		Dissability: courseReq.Dissability,
 	}
 
 	course, err := cs.course.CreateCourse(course)
@@ -58,7 +59,7 @@ func (cs *CourseService) CreateCourse(courseReq *model.CourseReq) (*entity.Cours
 	return course, nil
 }
 
-func (cs *CourseService) GetCourseByTitleOrID(param model.CourseNameSearch) ([]*entity.Course, error) {
+func (cs *CourseService) GetCourseByAny(param model.CourseSearch) ([]*entity.Course, error) {
 
 	if param.ID != uuid.Nil {
 		course, err := cs.course.GetCourseByID(param.ID.String())
@@ -68,11 +69,23 @@ func (cs *CourseService) GetCourseByTitleOrID(param model.CourseNameSearch) ([]*
 		fmt.Print(course)
 		return []*entity.Course{course}, nil
 	} else if param.Title != "" {
-		courses, err := cs.course.GetCourseByName(param.Title)
+		course, err := cs.course.GetCourseByName(param.Title)
 		if err != nil {
 			return nil, errors.New("Service: Course not found by title")
 		}
-		return courses, nil
+		return course, nil
+	} else if param.Tags != ""{
+		course, err := cs.course.GetCourseByTags(param.Tags)
+		if err != nil{
+			return nil, errors.New("Service: Course not found by tags")
+		}
+		return course, nil
+	} else if param.Dissability != ""{
+		course, err := cs.course.GetCourseByDissability(param.Dissability)
+		if err != nil{
+			return nil, errors.New("Service: Course not found by dissability")
+		}
+		return course, nil
 	} else {
 		return nil, errors.New("Service: No search criteria provided")
 	}

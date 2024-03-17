@@ -2,6 +2,7 @@ package rest
 
 import (
 	"errors"
+
 	"includemy/model"
 	"includemy/pkg/response"
 	"net/http"
@@ -26,11 +27,13 @@ func (r *Rest) CreateCourse(ctx *gin.Context) {
 	response.Success(ctx, http.StatusCreated, "Course created", course)
 }
 
-func (r *Rest) GetCourseByTitleOrID(ctx *gin.Context) {
-	var searchParam model.CourseNameSearch
+func (r *Rest) GetCourseByAny(ctx *gin.Context) {
+	var searchParam model.CourseSearch
 
 	title := ctx.Query("title")
 	idStr := ctx.Query("id")
+	tags := ctx.Query("tags")
+	dissability := ctx.Query("dissability")
 
 	if title != "" {
 		searchParam.Title = title
@@ -45,7 +48,15 @@ func (r *Rest) GetCourseByTitleOrID(ctx *gin.Context) {
 		searchParam.ID = id
 	}
 
-	course, err := r.service.CourseService.GetCourseByTitleOrID(searchParam)
+	if tags != "" {
+		searchParam.Tags = tags
+	}
+
+	if dissability != "" {
+		searchParam.Dissability = dissability
+	}
+
+	course, err := r.service.CourseService.GetCourseByAny(searchParam)
 	if err != nil {
 		response.Error(ctx, http.StatusNotFound, "Failed to find course", err)
 		return

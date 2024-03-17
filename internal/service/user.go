@@ -58,6 +58,9 @@ func (u *UserService) Signin(param model.UserReq) (entity.User, error) {
 		LastEdu:  param.LastEdu,
 		Contact:  param.Contact,
 		Role:     2,
+		Preference: param.Preference,
+		Dissability: param.Dissability,
+		
 	}
 
 	_, err = u.user.CreateUser(user)

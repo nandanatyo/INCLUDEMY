@@ -18,11 +18,9 @@ func (r *Rest) Signin(ctx *gin.Context) {
 
 	user, err := r.service.UserService.Signin(param)
 	if customErr, ok := err.(*response.CustomError); ok {
-		// Jika error adalah CustomError, gunakan kode dari CustomError
 		response.Error(ctx, customErr.Code, customErr.Message, nil)
 		return
 	} else if err != nil {
-		// Jika terjadi error lain, gunakan 500 sebagai default
 		response.Error(ctx, http.StatusInternalServerError, "Failed to register new user", err)
 		return
 	}

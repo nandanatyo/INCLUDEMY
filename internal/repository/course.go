@@ -12,6 +12,8 @@ type ICourseRepository interface {
 	CreateCourse(course *entity.Course) (*entity.Course, error)
 	GetCourseByID(id string) (*entity.Course, error)
 	GetCourseByName(title string) ([]*entity.Course, error)
+	GetCourseByDissability(dissability string) ([]*entity.Course, error)
+	GetCourseByTags(tags string) ([]*entity.Course, error)
 	DeleteCourse(id string) error
 	GetSubcourseWithinCourse(param model.CourseGet) (entity.Course, error)
 	UpdateCourse(id string, modifyCourse *model.CourseReq) (*entity.Course, error)
@@ -43,6 +45,22 @@ func (cr *CourseRepository) GetCourseByID(id string) (*entity.Course, error) {
 func (cr *CourseRepository) GetCourseByName(title string) ([]*entity.Course, error) {
 	var course []*entity.Course
 	if err := cr.db.Debug().Where("title LIKE ?", "%"+title+"%").Find(&course).Error; err != nil {
+		return nil, errors.New("Repository: Course not found")
+	}
+	return course, nil
+}
+
+func (cr *CourseRepository) GetCourseByTags(tags string) ([]*entity.Course, error) {
+	var course []*entity.Course
+	if err := cr.db.Debug().Where("tags LIKE ?", "%"+tags+"%").Find(&course).Error; err != nil {
+		return nil, errors.New("Repository: Course not found")
+	}
+	return course, nil
+}
+
+func (cr *CourseRepository) GetCourseByDissability(dissability string) ([]*entity.Course, error) {
+	var course []*entity.Course
+	if err := cr.db.Debug().Where("dissability LIKE ?", "%"+dissability+"%").Find(&course).Error; err != nil {
 		return nil, errors.New("Repository: Course not found")
 	}
 	return course, nil

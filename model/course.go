@@ -16,13 +16,16 @@ type CourseReq struct {
 	HowManyStudent uint   `json:"how_many_student" binding:"required"`
 	HowManyCourse  int    `json:"how_many_course" binding:"required"`
 	Tags           string `json:"tags" binding:"required"`
+	Dissability string `json:"dissability" binding:"required"`
 	PhotoLink      string `json:"photolink"`
 	About          string `json:"about" binding:"required"`
 }
 
-type CourseNameSearch struct {
+type CourseSearch struct {
 	Title string    `json:"title"`
 	ID    uuid.UUID `json:"id"`
+	Dissability string `json:"dissability"`
+	Tags string `jsin:"tags"`
 }
 
 type CourseGet struct {

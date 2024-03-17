@@ -26,4 +26,6 @@ type User struct {
 	Preference        string              `json:"preference" gorm:"type:varchar(255)"`
 	Applicant         []Applicant         `gorm:"foreignKey:UserID;references:ID"`
 	SertificationUser []SertificationUser `json:"sertification_user" gorm:"foreignKey:UserID;references:ID"`
+	OrderCourse		   []OrderCourse             `json:"order_course" gorm:"foreignKey:UserID;references:ID"`
+	OrderSertification []OrderSertification `json:"order_sertification" gorm:"foreignKey:UserID;references:ID"`
 }

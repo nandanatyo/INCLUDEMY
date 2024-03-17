@@ -19,4 +19,5 @@ type Sertification struct {
 	CreatedAt         time.Time           `json:"createdAt" gorm:"autoCreateTime"`
 	UpdatedAt         time.Time           `json:"updatedAt" gorm:"autoUpdateTime"`
 	SertificationUser []SertificationUser `json:"sertification_user" gorm:"foreignKey:SertificationID;references:ID"`
+	OrderSertification []OrderSertification `json:"order_sertification" gorm:"foreignKey:SertificationID;references:ID"`
 }
