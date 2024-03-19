@@ -31,7 +31,7 @@ func (r *Rest) MountEndpoints() {
 	search := r.router.Group("/search")
 
 	//User
-	r.router.POST("/signin", r.Signin)           //register
+	r.router.POST("/register", r.Register)           //register
 	r.router.POST("/login", r.Login)             //login
 	profile.POST("/upload-photo", r.UploadPhoto) //upload photo profile user
 	profile.POST("/update-user", r.UpdateUser)   //mengupdate profile user

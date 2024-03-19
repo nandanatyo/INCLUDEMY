@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (r *Rest) Signin(ctx *gin.Context) {
+func (r *Rest) Register(ctx *gin.Context) {
 	param := model.UserReq{}
 	err := ctx.ShouldBindJSON(&param)
 	if err != nil {
@@ -16,7 +16,7 @@ func (r *Rest) Signin(ctx *gin.Context) {
 		return
 	}
 
-	user, err := r.service.UserService.Signin(param)
+	user, err := r.service.UserService.Register(param)
 	if customErr, ok := err.(*response.CustomError); ok {
 		response.Error(ctx, customErr.Code, customErr.Message, nil)
 		return

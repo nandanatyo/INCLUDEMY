@@ -14,7 +14,7 @@ import (
 )
 
 type IUserService interface {
-	Signin(param model.UserReq) (entity.User, error)
+	Register(param model.UserReq) (entity.User, error)
 	Login(param model.UserLogin) (model.UserLoginResponse, error)
 	GetUser(param model.UserParam) (entity.User, error)
 	UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error)
@@ -41,7 +41,7 @@ func NewUserService(user repository.IUserRepository, bcrypt bcrypt.Interface, jw
 	}
 }
 
-func (u *UserService) Signin(param model.UserReq) (entity.User, error) {
+func (u *UserService) Register(param model.UserReq) (entity.User, error) {
 	hashPassword, err := u.bcrypt.GenerateFromPassword(param.Password)
 	if err != nil {
 		return entity.User{}, response.ErrHashingPassword
