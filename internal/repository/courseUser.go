@@ -11,6 +11,7 @@ type IUserJoinRepository interface {
 	CreateUserJoin(UserJoin *entity.UserJoinCourse) (*entity.UserJoinCourse, error)
 	GetUserJoinByID(id string) (*entity.UserJoinCourse, error)
 	DeleteUserJoinCourse(id string) error
+
 }
 
 type UserJoinRepository struct {
@@ -45,3 +46,11 @@ func (u *UserJoinRepository) GetUserJoinByID(id string) (*entity.UserJoinCourse,
 	}
 	return &userjoin, nil
 }
+
+
+
+
+
+
+
+

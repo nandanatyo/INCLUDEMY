@@ -10,7 +10,7 @@ type CourseReq struct {
 	Title          string `json:"title" binding:"required"`
 	Teacher        string `json:"teacher" binding:"required"`
 	Company        string `json:"company" binding:"required"`
-	Price          int    `json:"price" binding:"required"`
+	Price          int64    `json:"price" binding:"required"`
 	Description    string `json:"description" binding:"required"`
 	HowMuchTime    int    `json:"how_much_time" binding:"required"`
 	HowManyStudent uint   `json:"how_many_student" binding:"required"`

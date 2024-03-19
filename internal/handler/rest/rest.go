@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"fmt"
 	"includemy/internal/service"
 	"includemy/pkg/middleware"
 	"os"
@@ -31,7 +30,7 @@ func (r *Rest) MountEndpoints() {
 	search := r.router.Group("/search")
 
 	//User
-	r.router.POST("/register", r.Register)           //register
+	r.router.POST("/register", r.Register)       //register
 	r.router.POST("/login", r.Login)             //login
 	profile.POST("/upload-photo", r.UploadPhoto) //upload photo profile user
 	profile.POST("/update-user", r.UpdateUser)   //mengupdate profile user
@@ -46,6 +45,8 @@ func (r *Rest) MountEndpoints() {
 	user.POST("/join-course/subcourse", r.CreateUserSubcourse) //user otomatis mendaftar subCourse (logika dari FE)
 	user.GET("/course", r.GetUserCourse)                       //mendapatkan course yang user ikuti
 	user.PATCH("/update-subcourse/:id", r.UpdateUserSubcourse) //mengupdate subCourse dari user apakah di checklist atau tidak
+	user.POST("/join-premium-course", r.UserJoinPremiumCourse) //mendapatkan url payment
+	user.POST("/payment", r.Callback)						// mendapatkan status payment
 
 	admin.POST("/create-course", r.CreateCourse)                                     //membuat Course
 	admin.PATCH("/update-course/:id", r.UpdateCourse)                                //mengupdate Course
@@ -88,5 +89,5 @@ func (r *Rest) Run() {
 	if port == "" {
 		port = "5000"
 	}
-	r.router.Run(fmt.Sprintf(":%s", port))
+	r.router.Run(port)
 }

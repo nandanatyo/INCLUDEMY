@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/midtrans/midtrans-go"
 )
 
 func LoadEnvirontment() {
@@ -13,4 +14,9 @@ func LoadEnvirontment() {
 	if err != nil && env == "" {
 		log.Println("Error loading .env file")
 	}
+}
+
+func LoadMidtransConfig() {
+	midtrans.ServerKey = os.Getenv("MIDTRANS_SERVER_KEY")
+	midtrans.Environment = midtrans.Sandbox
 }
