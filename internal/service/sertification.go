@@ -34,14 +34,17 @@ func NewSertificationService(sertif repository.ISertificationRepository, supabas
 
 func (ss *SertificationService) CreateSertification(SertificationReq *model.SertificationReq) (*entity.Sertification, error) {
 	sertification := &entity.Sertification{
-		ID:       uuid.New(),
-		Title:    SertificationReq.Title,
-		About:    SertificationReq.About,
-		Tags:     SertificationReq.Tags,
-		Link:     SertificationReq.Link,
-		Creator:  SertificationReq.Creator,
-		Field:    SertificationReq.Field,
-		Location: SertificationReq.Location,
+		ID:          uuid.New(),
+		Title:       SertificationReq.Title,
+		About:       SertificationReq.About,
+		Tags:        SertificationReq.Tags,
+		Link:        SertificationReq.Link,
+		Creator:     SertificationReq.Creator,
+		Field:       SertificationReq.Field,
+		Syllabus:    SertificationReq.Syllabus,
+		Location:    SertificationReq.Location,
+		Dissability: SertificationReq.Dissability,
+		Price:       SertificationReq.Price,
 	}
 
 	sertification, err := ss.SertificationRepository.CreateSertification(sertification)

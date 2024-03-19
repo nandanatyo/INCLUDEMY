@@ -96,6 +96,15 @@ func (r *Rest) GetUserSertification(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Success to get user's sertification", user)
 }
 
+func (r *Rest) GetUserApplication(ctx *gin.Context) {
+	user, err := r.service.UserService.GetApplication(ctx)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "Failed to get user's application", err)
+		return
+	}
+	response.Success(ctx, http.StatusOK, "Success to get user's application", user)
+}
+
 func (r *Rest) DeleteUser(ctx *gin.Context) {
 	userID := ctx.Param("id")
 	err := r.service.UserService.DeleteUser(userID)

@@ -17,6 +17,7 @@ type Service struct {
 	ApplicantService         IApplicantService
 	SertificationService     ISertificationService
 	SertificationUserService ISertificationUserService
+	// PaymentCourseService    IPaymentCourseService
 }
 
 func NewService(repository *repository.Repository, bcrypt bcrypt.Interface, jwt jwt.Interface, supabase supabase.Interface) *Service {
@@ -27,8 +28,9 @@ func NewService(repository *repository.Repository, bcrypt bcrypt.Interface, jwt 
 		UserJoinService:          NewUserJoinService(repository.UserJoinRepository, repository.UserRepository, repository.CourseRepository),
 		UserSubcourseService:     NewUserSubcourseService(repository.UserSubcourseRepository, repository.UserRepository, repository.SubcourseRepository),
 		JobService:               NewJobService(repository.JobRepository, supabase),
-		ApplicantService:         NewApplicantService(repository.ApplicantRepository),
+		ApplicantService:         NewApplicantService(repository.ApplicantRepository, repository.JobRepository, repository.UserRepository),
 		SertificationService:     NewSertificationService(repository.SertificationRepository, supabase),
 		SertificationUserService: NewSertificationUserService(repository.SertificationRepository, repository.UserRepository, repository.SertificationUserRepository),
+		// PaymentCourseService:     NewPaymentCourseService(repository.PaymentCourseRepository),
 	}
 }

@@ -93,7 +93,15 @@ func parseUpdateSertif(modifySertif *model.SertificationReq, sertif *entity.Sert
 	}
 	if modifySertif.PhotoLink != "" {
 		sertif.PhotoLink = modifySertif.PhotoLink
-
+	}
+	if modifySertif.Syllabus != "" {
+		sertif.Syllabus = modifySertif.Syllabus
+	}
+	if modifySertif.Dissability != "" {
+		sertif.Dissability = modifySertif.Dissability
+	}
+	if modifySertif.Price != 0 {
+		sertif.Price = modifySertif.Price
 	}
 
 	return sertif

@@ -1,9 +1,11 @@
 package entity
 
+import "github.com/google/uuid"
+
 type Applicant struct {
-	ID            string          `json:"id" gorm:"type:varchar(36);primary_key;"`
-	JobID         string          `json:"job_id" gorm:"type:varchar(36);not null;"`
-	UserID        string          `json:"user_id" gorm:"type:varchar(36)not null;"`
+	ID            uuid.UUID       `json:"id" gorm:"type:varchar(36);primary_key;"`
+	JobID         uuid.UUID       `json:"job_id" gorm:"type:varchar(36);not null;"`
+	UserID        uuid.UUID       `json:"user_id" gorm:"type:varchar(36)not null;"`
 	FirstName     string          `json:"first_name" gorm:"type:varchar(255);not null;"`
 	LastName      string          `json:"last_name" gorm:"type:varchar(255);not null;"`
 	Email         string          `json:"email" gorm:"type:varchar(255);not null;"`

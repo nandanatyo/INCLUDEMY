@@ -42,6 +42,10 @@ func (r *UserJoinService) CreateUserJoinCourse(param *model.CreateUserJoinCourse
 		return nil, errors.New("Service: Course not found")
 	}
 
+	// if coursePrice.Price != 0{
+
+	// }
+
 	userJoin := entity.UserJoinCourse{
 		ID:       uuid.New(),
 		UserID:   param.UserID,

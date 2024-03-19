@@ -21,6 +21,7 @@ type IUserService interface {
 	UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (entity.User, error)
 	GetUserCourse(ctx *gin.Context) (entity.User, error)
 	GetUserSertification(ctx *gin.Context) (entity.User, error)
+	GetApplication(ctx *gin.Context) (entity.User, error)
 	DeleteUser(id string) error
 }
 
@@ -47,20 +48,18 @@ func (u *UserService) Signin(param model.UserReq) (entity.User, error) {
 	}
 
 	user := entity.User{
-		ID:       uuid.New(),
-		Username: param.Username,
-		Name:     param.Name,
-		Email:    param.Email,
-		Password: hashPassword,
-		Born:     param.Born,
-		Gender:   param.Gender,
-		LastJob:  param.LastJob,
-		LastEdu:  param.LastEdu,
-		Contact:  param.Contact,
-		Role:     2,
-		Preference: param.Preference,
+		ID:          uuid.New(),
+		Name:        param.Name,
+		Email:       param.Email,
+		Password:    hashPassword,
+		Born:        param.Born,
+		Gender:      param.Gender,
+		LastJob:     param.LastJob,
+		LastEdu:     param.LastEdu,
+		Contact:     param.Contact,
+		Role:        2,
+		Preference:  param.Preference,
 		Dissability: param.Dissability,
-		
 	}
 
 	_, err = u.user.CreateUser(user)
@@ -162,6 +161,15 @@ func (u *UserService) GetUserSertification(ctx *gin.Context) (entity.User, error
 	}
 
 	return u.user.GetUserSertification(model.UserParam{ID: user.ID})
+}
+
+func (u *UserService) GetApplication(ctx *gin.Context) (entity.User, error) {
+	user, err := u.jwtAuth.GetLogin(ctx)
+	if err != nil {
+		return user, err
+	}
+
+	return u.user.GetUserApplication(model.UserParam{ID: user.ID})
 }
 
 func (u *UserService) DeleteUser(id string) error {

@@ -49,7 +49,7 @@ func (cs *CourseService) CreateCourse(courseReq *model.CourseReq) (*entity.Cours
 		HowManyCourse:  courseReq.HowManyCourse,
 		Tags:           courseReq.Tags,
 		About:          courseReq.About,
-		Dissability: courseReq.Dissability,
+		Dissability:    courseReq.Dissability,
 	}
 
 	course, err := cs.course.CreateCourse(course)
@@ -74,15 +74,15 @@ func (cs *CourseService) GetCourseByAny(param model.CourseSearch) ([]*entity.Cou
 			return nil, errors.New("Service: Course not found by title")
 		}
 		return course, nil
-	} else if param.Tags != ""{
+	} else if param.Tags != "" {
 		course, err := cs.course.GetCourseByTags(param.Tags)
-		if err != nil{
+		if err != nil {
 			return nil, errors.New("Service: Course not found by tags")
 		}
 		return course, nil
-	} else if param.Dissability != ""{
+	} else if param.Dissability != "" {
 		course, err := cs.course.GetCourseByDissability(param.Dissability)
-		if err != nil{
+		if err != nil {
 			return nil, errors.New("Service: Course not found by dissability")
 		}
 		return course, nil

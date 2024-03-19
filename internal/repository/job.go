@@ -78,27 +78,28 @@ func parseUpdateJob(modifyJob *model.JobReq, job *entity.Job) *entity.Job {
 	if modifyJob.Location != "" {
 		job.Location = modifyJob.Location
 	}
-	if modifyJob.JobType != "" {
-		job.JobType = modifyJob.JobType
-	}
 	if modifyJob.JobDesc != "" {
 		job.JobDesc = modifyJob.JobDesc
-	}
-	if modifyJob.JobReq != "" {
-		job.JobReq = modifyJob.JobReq
 	}
 	if modifyJob.JobSalary != "" {
 		job.JobSalary = modifyJob.JobSalary
 	}
-	if modifyJob.JobExp != "" {
-		job.JobExp = modifyJob.JobExp
-	}
-	if modifyJob.JobEdu != "" {
-		job.JobEdu = modifyJob.JobEdu
-	}
 	if modifyJob.JobLink != "" {
 		job.JobLink = modifyJob.JobLink
 	}
+	if modifyJob.Tags != "" {
+		job.Tags = modifyJob.Tags
+	}
+	if modifyJob.Field != "" {
+		job.Field = modifyJob.Field
+	}
+	if modifyJob.HowMuchWorker != "" {
+		job.HowMuchWorker = modifyJob.HowMuchWorker
+	}
+	if modifyJob.Apply != 0 {
+		job.Apply = modifyJob.Apply
+	}
+
 	return job
 }
 

@@ -15,6 +15,7 @@ type IUserRepository interface {
 	UpdateUser(modifyUser *model.UserReq, id string) (*entity.User, error)
 	GetUserCourse(param model.UserParam) (entity.User, error)
 	GetUserSertification(param model.UserParam) (entity.User, error)
+	GetUserApplication(param model.UserParam) (entity.User, error)
 	DeleteUser(id string) error
 }
 
@@ -64,6 +65,16 @@ func (u *UserRepository) GetUserSertification(param model.UserParam) (entity.Use
 	return user, nil
 }
 
+func (u *UserRepository) GetUserApplication(param model.UserParam) (entity.User, error) {
+	user := entity.User{}
+	err := u.db.Debug().Where(&param).Preload("Applicant").First(&user).Error
+
+	if err != nil {
+		return user, err
+	}
+	return user, nil
+}
+
 func (u *UserRepository) UpdateUser(modifyUser *model.UserReq, id string) (*entity.User, error) {
 	var user entity.User
 
@@ -86,9 +97,7 @@ func parseUpdateUser(modifyUser *model.UserReq, user *entity.User) (*entity.User
 	if modifyUser.Name != "" {
 		user.Name = modifyUser.Name
 	}
-	if modifyUser.Username != "" {
-		user.Username = modifyUser.Username
-	}
+
 	if modifyUser.Contact != "" {
 		user.Contact = modifyUser.Contact
 	}

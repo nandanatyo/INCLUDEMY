@@ -34,17 +34,17 @@ func NewJobService(jobRepository repository.IJobRepository, supabase supabase.In
 
 func (js *JobService) CreateJob(jobReq *model.JobReq) (*entity.Job, error) {
 	job := &entity.Job{
-		ID:        uuid.New(),
-		JobName:   jobReq.JobName,
-		JobDesc:   jobReq.JobDesc,
-		JobType:   jobReq.JobType,
-		JobSalary: jobReq.JobSalary,
-		Company:   jobReq.Company,
-		Location:  jobReq.Location,
-		JobReq:    jobReq.JobReq,
-		JobExp:    jobReq.JobExp,
-		JobEdu:    jobReq.JobEdu,
-		JobLink:   jobReq.JobLink,
+		ID:            uuid.New(),
+		JobName:       jobReq.JobName,
+		JobDesc:       jobReq.JobDesc,
+		JobSalary:     jobReq.JobSalary,
+		Company:       jobReq.Company,
+		Location:      jobReq.Location,
+		JobLink:       jobReq.JobLink,
+		Tags:          jobReq.Tags,
+		Field:         jobReq.Field,
+		HowMuchWorker: jobReq.HowMuchWorker,
+		Apply:         jobReq.Apply,
 	}
 
 	job, err := js.jobRepository.CreateJob(job)

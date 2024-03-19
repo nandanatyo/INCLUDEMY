@@ -9,7 +9,6 @@ import (
 
 type UserReq struct {
 	ID          uuid.UUID `json:"-"`
-	Username    string    `json:"username" binding:"required"`
 	Name        string    `json:"name" binding:"required"`
 	Email       string    `json:"email" binding:"required,email"`
 	Password    string    `json:"password" binding:"required"`

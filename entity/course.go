@@ -17,7 +17,7 @@ type Course struct {
 	HowManyStudent uint             `json:"how_many_student" gorm:"type:int;not null;"`
 	HowManyCourse  int              `json:"how_many_course" gorm:"type:int;not null;"`
 	Tags           string           `json:"tags" gorm:"type:varchar(255);not null;"`
-	Dissability string 				`json:"dissability" gorm:"type:varchar(255);not null;"`
+	Dissability    string           `json:"dissability" gorm:"type:varchar(255);not null;"`
 	About          string           `json:"about" gorm:"type:varchar(255);not null;"`
 	PhotoLink      string           `json:"photolink" gorm:"type:varchar(200)"`
 	Subcourse      []Subcourse      `json:"sub_course" gorm:"foreignKey:CourseID"`

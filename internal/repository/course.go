@@ -129,5 +129,9 @@ func parseUpdate(modifyCourse *model.CourseReq, course *entity.Course) *entity.C
 	if modifyCourse.PhotoLink != "" {
 		course.PhotoLink = modifyCourse.PhotoLink
 	}
+	if modifyCourse.Dissability != "" {
+		course.Dissability = modifyCourse.Dissability
+	}
+
 	return course
 }
