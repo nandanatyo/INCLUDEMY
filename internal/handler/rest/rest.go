@@ -46,7 +46,9 @@ func (r *Rest) MountEndpoints() {
 	user.GET("/course", r.GetUserCourse)                       //mendapatkan course yang user ikuti
 	user.PATCH("/update-subcourse/:id", r.UpdateUserSubcourse) //mengupdate subCourse dari user apakah di checklist atau tidak
 	user.POST("/join-premium-course", r.UserJoinPremiumCourse) //mendapatkan url payment
-	user.POST("/payment", r.Callback)						// mendapatkan status payment
+	user.POST("/course/payment", r.Callback)						// mendapatkan status payment
+	user.POST("/join-premium-sertification", r.UserJoinPremiumSertif) //mendapatkan url payment
+	user.POST("sertification/payment", r.CallbackSertif) // mendapatkan status payment
 
 	admin.POST("/create-course", r.CreateCourse)                                     //membuat Course
 	admin.PATCH("/update-course/:id", r.UpdateCourse)                                //mengupdate Course

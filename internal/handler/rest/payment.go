@@ -49,7 +49,7 @@ func (r *Rest) UserJoinPremiumSertif(ctx *gin.Context) {
 		return
 	}
 
-	result, err := r.service.PaymentService.GetPayment(&param)
+	result, err := r.service.PaymentService.GetPaymentSertif(&param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to get url payment", err)
 		return
@@ -58,7 +58,7 @@ func (r *Rest) UserJoinPremiumSertif(ctx *gin.Context) {
 
 }
 
-func (r *Rest) Callback(ctx *gin.Context) {
+func (r *Rest) CallbackSertif(ctx *gin.Context) {
 	var notificationPayload map[string]interface{}
 
 	err := ctx.ShouldBind(&notificationPayload)
@@ -71,5 +71,5 @@ func (r *Rest) Callback(ctx *gin.Context) {
 		return
 	}
 
-	r.service.PaymentService.Callback(notificationPayload)
+	r.service.PaymentService.CallbackSertif(notificationPayload)
 }

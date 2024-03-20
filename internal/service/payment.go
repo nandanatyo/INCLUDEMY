@@ -13,6 +13,9 @@ import (
 type IPaymentService interface {
 	GetPaymentCourse(param *model.CreateUserJoinCourse) (model.PaymentResponse,error)
 	CallbackCourse(notificationPayload map[string]interface{})
+	GetPaymentSertif(param *model.CreateSertificationUser) (model.PaymentResponse,error)
+	CallbackSertif(notificationPayload map[string]interface{})
+
 
 }
 
