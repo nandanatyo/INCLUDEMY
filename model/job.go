@@ -19,4 +19,8 @@ type JobReq struct {
 type JobSearch struct {
 	ID    uuid.UUID `json:"id"`
 	Title string    `json:"title"`
+	Tags  string    `json:"tags"`
+	Dissability string `json:"dissability"`
+	Field string `json:"field"`
+
 }

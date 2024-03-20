@@ -10,8 +10,8 @@ import (
 type IApplicantRepository interface {
 	CreateApplicant(regist *entity.Applicant) (*entity.Applicant, error)
 	DeleteApplicant(id string) error
-	//update
-	//delete
+	GetAppByID(id string) (*entity.Applicant, error)
+	CreateAppFile(appFile *entity.ApplicantFile) (*entity.ApplicantFile, error)
 }
 
 type ApplicantRepository struct {
@@ -28,6 +28,22 @@ func (ar *ApplicantRepository) CreateApplicant(regist *entity.Applicant) (*entit
 		return nil, errors.New("Repository: Failed to create applicant")
 	}
 	return regist, nil
+}
+
+func (ar *ApplicantRepository) CreateAppFile(appFile *entity.ApplicantFile) (*entity.ApplicantFile, error) {
+	err := ar.db.Create(&appFile).Error
+	if err != nil {
+		return nil, errors.New("Repository: Failed to create applicant file")
+	}
+	return appFile, nil
+}
+
+func (ar *ApplicantRepository) GetAppByID(id string) (*entity.Applicant, error) {
+	var app entity.Applicant
+	if err := ar.db.Debug().Where("id = ?", id).First(&app).Error; err != nil {
+		return nil, errors.New("Repository: Applicant not found")
+	}
+	return &app, nil
 }
 
 func (ar *ApplicantRepository) DeleteApplicant(id string) error {

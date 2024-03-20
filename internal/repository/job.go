@@ -15,6 +15,9 @@ type IJobRepository interface {
 	DeleteJob(id string) error
 	UpdateJob(id string, modifyJob *model.JobReq) (*entity.Job, error)
 	CreateJobFile(jobFile *entity.JobFile) (*entity.JobFile, error)
+	GetJobByDissability(dissability string) ([]*entity.Job, error)
+	GetJobByTags(tags string) ([]*entity.Job, error)
+	GetJobByField(field string) ([]*entity.Job, error)
 }
 
 type JobRepository struct {
@@ -40,9 +43,33 @@ func (jr *JobRepository) GetJobByID(id string) (*entity.Job, error) {
 	return &job, nil
 }
 
-func (jr *JobRepository) GetJobByName(title string) ([]*entity.Job, error) {
+func (jr *JobRepository) GetJobByName(job_name string) ([]*entity.Job, error) {
 	var job []*entity.Job
-	if err := jr.db.Debug().Where("title LIKE ?", "%"+title+"%").Find(&job).Error; err != nil {
+	if err := jr.db.Debug().Where("job_name LIKE ?", "%"+job_name+"%").Find(&job).Error; err != nil {
+		return nil, errors.New("Repository: Course not found")
+	}
+	return job, nil
+}
+
+func (jr *JobRepository) GetJobByField(field string) ([]*entity.Job, error) {
+	var job []*entity.Job
+	if err := jr.db.Debug().Where("field LIKE ?", "%"+field+"%").Find(&job).Error; err != nil {
+		return nil, errors.New("Repository: Course not found")
+	}
+	return job, nil
+}
+
+func (jr *JobRepository) GetJobByTags(tags string) ([]*entity.Job, error) {
+	var job []*entity.Job
+	if err := jr.db.Debug().Where("tags LIKE ?", "%"+tags+"%").Find(&job).Error; err != nil {
+		return nil, errors.New("Repository: Course not found")
+	}
+	return job, nil
+}
+
+func (jr *JobRepository) GetJobByDissability(dissability string) ([]*entity.Job, error) {
+	var job []*entity.Job
+	if err := jr.db.Debug().Where("dissability LIKE ?", "%"+dissability+"%").Find(&job).Error; err != nil {
 		return nil, errors.New("Repository: Course not found")
 	}
 	return job, nil

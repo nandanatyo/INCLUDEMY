@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"fmt"
+
 	"includemy/internal/service"
 	"includemy/pkg/middleware"
 	"os"
@@ -77,10 +77,11 @@ func (r *Rest) MountEndpoints() {
 	admin.DELETE("/delete-sertification-user/:id", r.DeleteSertificationUser) //menghapus sertification user
 
 	//ApplyJob
-	search.GET("/job/", r.GetJobByTitleOrID) //melihat job berdasarkan id atau title
+	search.GET("/job/", r.GetJobByAny) //melihat job berdasarkan id atau title
 
 	user.POST("/apply-job", r.CreateApplicant)     //user melamar job
 	user.GET("/application", r.GetUserApplication) //melihat application yang dilakukan user
+	user.POST("/application/upload-file", r.UploadApplicantFile)
 
 	admin.POST("/create-job", r.CreateJob)                 //membuat job
 	admin.DELETE("/delete-job/:id", r.DeleteJob)           //menghapus job
@@ -94,7 +95,7 @@ func (r *Rest) Run() {
 	if port == "" {
 		port = "5000"
 	}
-	r.router.Run(fmt.Sprintf(":%s", port))
+	r.router.Run(port)
 	// r.router.Run(port)
 	//r.router.Run(fmt.Sprintf(":%s", port))
 }

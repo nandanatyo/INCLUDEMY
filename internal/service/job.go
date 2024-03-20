@@ -15,7 +15,7 @@ import (
 type IJobService interface {
 	CreateJob(jobReq *model.JobReq) (*entity.Job, error)
 	UpdateJob(id string, modifyJob *model.JobReq) (*entity.Job, error)
-	GetJobByTitleOrID(param model.JobSearch) ([]*entity.Job, error)
+	GetJobByAny(param model.JobSearch) ([]*entity.Job, error)
 	DeleteJob(id string) error
 	UploadJobFile(param *entity.ParamJobFile) (*entity.JobFile, error)
 }
@@ -54,7 +54,7 @@ func (js *JobService) CreateJob(jobReq *model.JobReq) (*entity.Job, error) {
 	return job, nil
 }
 
-func (js *JobService) GetJobByTitleOrID(param model.JobSearch) ([]*entity.Job, error) {
+func (js *JobService) GetJobByAny(param model.JobSearch) ([]*entity.Job, error) {
 
 	if param.ID != uuid.Nil {
 		job, err := js.jobRepository.GetJobByID(param.ID.String())
@@ -68,7 +68,25 @@ func (js *JobService) GetJobByTitleOrID(param model.JobSearch) ([]*entity.Job, e
 			return nil, errors.New("Service: Job not found by title")
 		}
 		return job, nil
-	} else {
+	} else if param.Tags != "" {
+		job, err := js.jobRepository.GetJobByTags(param.Tags)
+		if err != nil {
+			return nil, errors.New("Service: Job not found by tags")
+		}
+		return job, nil
+	} else if param.Dissability != "" {
+		job, err := js.jobRepository.GetJobByDissability(param.Dissability)
+		if err != nil {
+			return nil, errors.New("Service: Job not found by dissability")
+		}
+		return job, nil
+	} else if param.Field != "" {
+		job, err := js.jobRepository.GetJobByField(param.Field)
+		if err != nil {
+			return nil, errors.New("Service: Job not found by field")
+		}
+		return job, nil
+	}else {
 		return nil, errors.New("Service: No search criteria provided")
 	}
 }

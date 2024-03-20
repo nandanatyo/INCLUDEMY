@@ -54,11 +54,14 @@ func (r *Rest) UpdateJob(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Job updated", job)
 }
 
-func (r *Rest) GetJobByTitleOrID(ctx *gin.Context) {
+func (r *Rest) GetJobByAny(ctx *gin.Context) {
 	var jobParam model.JobSearch
 
 	title := ctx.Query("title")
 	idStr := ctx.Query("id")
+	field := ctx.Query("field")
+	tags := ctx.Query("tags")
+	dissability := ctx.Query("dissability")
 
 	if title != "" {
 		jobParam.Title = title
@@ -73,7 +76,20 @@ func (r *Rest) GetJobByTitleOrID(ctx *gin.Context) {
 		jobParam.ID = id
 	}
 
-	job, err := r.service.JobService.GetJobByTitleOrID(jobParam)
+	if field != "" {
+		jobParam.Field = field
+	}
+
+	if tags != "" {
+		jobParam.Tags = tags
+	}
+
+	if dissability != "" {
+		jobParam.Dissability = dissability
+	}
+
+
+	job, err := r.service.JobService.GetJobByAny(jobParam)
 	if err != nil {
 		response.Error(ctx, http.StatusNotFound, "Failed to find job", err)
 		return

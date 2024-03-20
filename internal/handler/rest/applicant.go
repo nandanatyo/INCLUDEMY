@@ -1,6 +1,8 @@
 package rest
 
 import (
+	"errors"
+	"includemy/entity"
 	"includemy/model"
 	"includemy/pkg/response"
 	"net/http"
@@ -35,3 +37,32 @@ func (r *Rest) DeleteApplication(ctx *gin.Context) {
 
 	response.Success(ctx, http.StatusOK, "Success to delete application", nil)
 }
+
+func (r *Rest) UploadApplicantFile(ctx *gin.Context) {
+	appID := ctx.PostForm("applicant_id")
+	if appID == "" {
+		response.Error(ctx, http.StatusBadRequest, "applicant_id is required", errors.New("applicant_id is required"))
+		return
+	}
+
+	file, err := ctx.FormFile("file")
+	if err != nil {
+		response.Error(ctx, http.StatusBadRequest, "Failed to bind input", err)
+		return
+	}
+
+	app, err := r.service.ApplicantService.UploadApplicantFile(&entity.ParamAppFile{
+		AppID: appID,
+		File:  file,
+	})
+
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "Failed to upload photo", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to upload photo", app)
+}
+
+
+
