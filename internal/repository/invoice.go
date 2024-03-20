@@ -36,7 +36,6 @@ func (u *InvoiceRepository) GetInvoiceByID(id string) (*entity.Invoice, error) {
 	return &invoice, nil
 }
 
-
 func (u *InvoiceRepository) UpdateInvoice(status string, orderID string) (*entity.Invoice, error) {
 	var UpdateInvoice entity.Invoice
 	if err := u.db.Debug().Where("id = ?", orderID).First(&UpdateInvoice).Error; err != nil {

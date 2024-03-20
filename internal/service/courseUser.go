@@ -71,4 +71,3 @@ func (r *UserJoinService) CreateUserJoinCourse(param *model.CreateUserJoinCourse
 
 	return gotJoin, nil
 }
-

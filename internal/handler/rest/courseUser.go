@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func (r *Rest) DeleteUserJoinCourse(ctx *gin.Context) {
 	userjoincourseID := ctx.Param("id")
 	err := r.service.UserJoinService.DeleteUserJoinCourse(userjoincourseID)
@@ -36,5 +35,3 @@ func (r *Rest) CreateUserJoinCourse(ctx *gin.Context) {
 
 	response.Success(ctx, http.StatusCreated, "Success to join", join)
 }
-
-

@@ -11,31 +11,29 @@ import (
 )
 
 type IPaymentService interface {
-	GetPaymentCourse(param *model.CreateUserJoinCourse) (model.PaymentResponse,error)
+	GetPaymentCourse(param *model.CreateUserJoinCourse) (model.PaymentResponse, error)
 	CallbackCourse(notificationPayload map[string]interface{})
-	GetPaymentSertif(param *model.CreateSertificationUser) (model.PaymentResponse,error)
+	GetPaymentSertif(param *model.CreateSertificationUser) (model.PaymentResponse, error)
 	CallbackSertif(notificationPayload map[string]interface{})
-
-
 }
 
 type PaymentService struct {
 	Invoice repository.IInvoiceRepository
-	User repository.IUserRepository
-	Course repository.ICourseRepository
-	Sertif repository.ISertificationRepository
+	User    repository.IUserRepository
+	Course  repository.ICourseRepository
+	Sertif  repository.ISertificationRepository
 }
 
 func NewPaymentService(invoice repository.IInvoiceRepository, user repository.IUserRepository, course repository.ICourseRepository, sertif repository.ISertificationRepository) *PaymentService {
 	return &PaymentService{
 		Invoice: invoice,
-		User: user,
-		Course: course,
-		Sertif: sertif,
+		User:    user,
+		Course:  course,
+		Sertif:  sertif,
 	}
 }
 
-func (p *PaymentService) GetPaymentCourse(param *model.CreateUserJoinCourse) (model.PaymentResponse,error) {
+func (p *PaymentService) GetPaymentCourse(param *model.CreateUserJoinCourse) (model.PaymentResponse, error) {
 	_, err := p.User.GetUser(model.UserParam{
 		ID: param.UserID,
 	})
@@ -61,18 +59,17 @@ func (p *PaymentService) GetPaymentCourse(param *model.CreateUserJoinCourse) (mo
 
 	resp, _ := snap.CreateTransaction(payReq)
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
-		OrderID:  payReq.TransactionDetails.OrderID,
-		UserID:  param.UserID.String(),
+		OrderID:          payReq.TransactionDetails.OrderID,
+		UserID:           param.UserID.String(),
 		CourseorSertifID: param.CourseID.String(),
-		Status:   "pending",
+		Status:           "pending",
 	})
 	if err != nil {
 		return model.PaymentResponse{}, err
 	}
 
-
 	result := model.PaymentResponse{
-		Token:       resp.Token,
+		Token:   resp.Token,
 		SnapUrl: resp.RedirectURL,
 	}
 	return result, nil
@@ -83,7 +80,6 @@ func (p *PaymentService) CallbackCourse(notificationPayload map[string]interface
 	orderID := notificationPayload["order_id"]
 	transactionStatus := notificationPayload["transaction_status"]
 	fraudStatus := notificationPayload["fraud_status"]
-
 
 	if transactionStatus == "capture" {
 		if fraudStatus == "challenge" {
@@ -109,7 +105,7 @@ func (p *PaymentService) CallbackCourse(notificationPayload map[string]interface
 	}
 }
 
-func (p *PaymentService) GetPaymentSertif(param *model.CreateSertificationUser) (model.PaymentResponse,error) {
+func (p *PaymentService) GetPaymentSertif(param *model.CreateSertificationUser) (model.PaymentResponse, error) {
 	_, err := p.User.GetUser(model.UserParam{
 		ID: param.UserID,
 	})
@@ -135,18 +131,17 @@ func (p *PaymentService) GetPaymentSertif(param *model.CreateSertificationUser) 
 
 	resp, _ := snap.CreateTransaction(payReq)
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
-		OrderID:  payReq.TransactionDetails.OrderID,
-		UserID:  param.UserID.String(),
+		OrderID:          payReq.TransactionDetails.OrderID,
+		UserID:           param.UserID.String(),
 		CourseorSertifID: param.SertifID.String(),
-		Status:   "pending",
+		Status:           "pending",
 	})
 	if err != nil {
 		return model.PaymentResponse{}, err
 	}
 
-
 	result := model.PaymentResponse{
-		Token:       resp.Token,
+		Token:   resp.Token,
 		SnapUrl: resp.RedirectURL,
 	}
 	return result, nil
@@ -157,7 +152,6 @@ func (p *PaymentService) CallbackSertif(notificationPayload map[string]interface
 	orderID := notificationPayload["order_id"]
 	transactionStatus := notificationPayload["transaction_status"]
 	fraudStatus := notificationPayload["fraud_status"]
-
 
 	if transactionStatus == "capture" {
 		if fraudStatus == "challenge" {

@@ -11,7 +11,7 @@ type Course struct {
 	Title          string           `json:"title" gorm:"type:varchar(255);not null;"`
 	Teacher        string           `json:"teacher" gorm:"type:varchar(255);not null;"`
 	Company        string           `json:"company" gorm:"type:varchar(255);not null;"`
-	Price          int64              `json:"price" gorm:"type:int;not null;"`
+	Price          int64            `json:"price" gorm:"type:int;not null;"`
 	Description    string           `json:"description" gorm:"type:varchar(255);not null;"`
 	HowMuchTime    int              `json:"how_much_time" gorm:"type:int;not null;"` //cari cara otomatis
 	HowManyStudent uint             `json:"how_many_student" gorm:"type:int;not null;"`
