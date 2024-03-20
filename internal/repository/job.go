@@ -48,6 +48,8 @@ func (jr *JobRepository) GetJobByName(title string) ([]*entity.Job, error) {
 	return job, nil
 }
 
+
+
 func (jr *JobRepository) DeleteJob(id string) error {
 	if err := jr.db.Debug().Where("id = ?", id).Delete(&entity.Job{}).Error; err != nil {
 		return errors.New("Repository: Failed to delete sertification")
