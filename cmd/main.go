@@ -16,6 +16,7 @@ import (
 func main() {
 
 	config.LoadEnvirontment()
+	config.LoadMidtransConfig()
 	db := mysql.ConnectDatabase()
 	err := mysql.Migrate(db)
 	if err != nil {
