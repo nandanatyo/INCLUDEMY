@@ -11,11 +11,12 @@ import (
 type ISertificationRepository interface {
 	CreateSertification(sertification *entity.Sertification) (*entity.Sertification, error)
 	DeleteSertification(id string) error
-	GetSertiicationByName(title string) ([]*entity.Sertification, error)
+	GetSertificationByName(title string) ([]*entity.Sertification, error)
 	GetSertificationByID(id string) (*entity.Sertification, error)
 	UpdateSertification(id string, modifySertif *model.SertificationReq) (*entity.Sertification, error)
-	//update
-	//delete
+	GetSertificationByDissability(dissability string) ([]*entity.Sertification, error)
+	GetSertificationByField(field string) ([]*entity.Sertification, error)
+	GetSertificationByTags(tags string) ([]*entity.Sertification, error)
 }
 
 type SertificationRepository struct {
@@ -41,9 +42,33 @@ func (sr *SertificationRepository) GetSertificationByID(id string) (*entity.Sert
 	return &sertif, nil
 }
 
-func (sr *SertificationRepository) GetSertiicationByName(title string) ([]*entity.Sertification, error) {
+func (sr *SertificationRepository) GetSertificationByName(title string) ([]*entity.Sertification, error) {
 	var sertif []*entity.Sertification
 	if err := sr.db.Debug().Where("title LIKE ?", "%"+title+"%").Find(&sertif).Error; err != nil {
+		return nil, errors.New("Repository: Course not found")
+	}
+	return sertif, nil
+}
+
+func (sr *SertificationRepository) GetSertificationByTags(tags string) ([]*entity.Sertification, error) {
+	var sertif []*entity.Sertification
+	if err := sr.db.Debug().Where("tags LIKE ?", "%"+tags+"%").Find(&sertif).Error; err != nil {
+		return nil, errors.New("Repository: Course not found")
+	}
+	return sertif, nil
+}
+
+func (sr *SertificationRepository) GetSertificationByField(field string) ([]*entity.Sertification, error) {
+	var sertif []*entity.Sertification
+	if err := sr.db.Debug().Where("field LIKE ?", "%"+field+"%").Find(&sertif).Error; err != nil {
+		return nil, errors.New("Repository: Course not found")
+	}
+	return sertif, nil
+}
+
+func (sr *SertificationRepository) GetSertificationByDissability(dissability string) ([]*entity.Sertification, error) {
+	var sertif []*entity.Sertification
+	if err := sr.db.Debug().Where("dissability LIKE ?", "%"+dissability+"%").Find(&sertif).Error; err != nil {
 		return nil, errors.New("Repository: Course not found")
 	}
 	return sertif, nil

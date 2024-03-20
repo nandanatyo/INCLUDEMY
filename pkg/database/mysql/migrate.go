@@ -17,6 +17,8 @@ func Migrate(db *gorm.DB) error {
 		&entity.Applicant{},
 		&entity.Sertification{},
 		&entity.SertificationUser{},
+		&entity.JobFile{},
+		&entity.ApplicantFile{},
 	); err != nil {
 		return err
 	}

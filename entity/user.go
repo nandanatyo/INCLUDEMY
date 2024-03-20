@@ -20,7 +20,7 @@ type User struct {
 	PhotoLink          string               `json:"photolink" gorm:"type:varchar(200)"`
 	CreatedAt          time.Time            `json:"createdAt" gorm:"autoCreateTime"`
 	UpdatedAt          time.Time            `json:"updatedAt" gorm:"autoUpdateTime"`
-	UserJoinCourse     []UserJoinCourse     `json:"user_join_course" gorm:"foreignKey:UserID"`
+	UserJoinCourse     []UserJoinCourse     `json:"user_join_course" gorm:"foreignKey:UserID;references:ID"`
 	Dissability        string               `json:"dissability" gorm:"type:varchar(255)"`
 	Preference         string               `json:"preference" gorm:"type:varchar(255)"`
 	Applicant          []Applicant          `gorm:"foreignKey:UserID;references:ID"`

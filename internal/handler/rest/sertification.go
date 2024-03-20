@@ -31,6 +31,10 @@ func (r *Rest) GetSertificationByTitleOrID(ctx *gin.Context) {
 
 	title := ctx.Query("title")
 	idStr := ctx.Query("id")
+	tags := ctx.Query("tags")
+	dissability := ctx.Query("dissability")
+	field := ctx.Query("field")
+
 
 	if title != "" {
 		searchParam.Title = title
@@ -45,7 +49,20 @@ func (r *Rest) GetSertificationByTitleOrID(ctx *gin.Context) {
 		searchParam.ID = id
 	}
 
-	sertif, err := r.service.SertificationService.GetSertificationByTitleOrID(searchParam)
+	if tags != "" {
+		searchParam.Tags = tags
+	}
+
+	if dissability != "" {
+		searchParam.Dissability = dissability
+	}
+
+	if field != "" {
+		searchParam.Field = field
+	}
+	
+
+	sertif, err := r.service.SertificationService.GetSertificationByAny(searchParam)
 	if err != nil {
 		// Handle errors, such as course not found
 		response.Error(ctx, http.StatusNotFound, "Failed to find sertification", err)

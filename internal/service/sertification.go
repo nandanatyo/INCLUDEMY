@@ -15,7 +15,7 @@ import (
 type ISertificationService interface {
 	CreateSertification(SertificationReq *model.SertificationReq) (*entity.Sertification, error)
 	UpdateSertification(id string, modifySertif *model.SertificationReq) (*entity.Sertification, error)
-	GetSertificationByTitleOrID(param model.SertifSearch) ([]*entity.Sertification, error)
+	GetSertificationByAny(param model.SertifSearch) ([]*entity.Sertification, error)
 	DeleteSertification(id string) error
 	UploadSertificationFile(param model.SertifPost) (entity.Sertification, error)
 }
@@ -54,7 +54,7 @@ func (ss *SertificationService) CreateSertification(SertificationReq *model.Sert
 	return sertification, nil
 }
 
-func (ss *SertificationService) GetSertificationByTitleOrID(param model.SertifSearch) ([]*entity.Sertification, error) {
+func (ss *SertificationService) GetSertificationByAny(param model.SertifSearch) ([]*entity.Sertification, error) {
 
 	if param.ID != uuid.Nil {
 		sertif, err := ss.SertificationRepository.GetSertificationByID(param.ID.String())
@@ -63,14 +63,33 @@ func (ss *SertificationService) GetSertificationByTitleOrID(param model.SertifSe
 		}
 		return []*entity.Sertification{sertif}, nil
 	} else if param.Title != "" {
-		sertif, err := ss.SertificationRepository.GetSertiicationByName(param.Title)
+		sertif, err := ss.SertificationRepository.GetSertificationByName(param.Title)
 		if err != nil {
 			return nil, errors.New("Service: Sertification not found by title")
+		}
+		return sertif, nil
+	} else if param.Tags != "" {
+		sertif, err := ss.SertificationRepository.GetSertificationByTags(param.Tags)
+		if err != nil {
+			return nil, errors.New("Service: Sertification not found by tags")
+		}
+		return sertif, nil
+	} else if param.Dissability != "" {
+		sertif, err := ss.SertificationRepository.GetSertificationByDissability(param.Dissability)
+		if err != nil {
+			return nil, errors.New("Service: Sertification not found by dissability")
+		}
+		return sertif, nil
+	} else if param.Field != "" {
+		sertif, err := ss.SertificationRepository.GetSertificationByField(param.Field)
+		if err != nil {
+			return nil, errors.New("Service: Sertification not found by field")
 		}
 		return sertif, nil
 	} else {
 		return nil, errors.New("Service: No search criteria provided")
 	}
+
 }
 
 func (ss *SertificationService) DeleteSertification(id string) error {

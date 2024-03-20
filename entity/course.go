@@ -20,7 +20,7 @@ type Course struct {
 	Dissability    string           `json:"dissability" gorm:"type:varchar(255);not null;"`
 	About          string           `json:"about" gorm:"type:varchar(255);not null;"`
 	PhotoLink      string           `json:"photolink" gorm:"type:varchar(200)"`
-	Subcourse      []Subcourse      `json:"sub_course" gorm:"foreignKey:CourseID"`
+	Subcourse      []Subcourse      `json:"sub_course" gorm:"foreignKey:CourseID;references:ID"`
 	CreatedAt      time.Time        `json:"createdAt" gorm:"autoCreateTime"`
 	UpdatedAt      time.Time        `json:"updatedAt" gorm:"autoUpdateTime"`
 	UserJoinCourse []UserJoinCourse `gorm:"foreignKey:CourseID;references:ID"`
