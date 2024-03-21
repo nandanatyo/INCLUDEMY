@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"fmt"
 	"includemy/internal/service"
 	"includemy/pkg/middleware"
 	"os"
@@ -95,7 +94,7 @@ func (r *Rest) Run() {
 	if port == "" {
 		port = "5000"
 	}
-	r.router.Run(fmt.Sprintf(":%s", port))
+	r.router.Run(port)
 	// r.router.Run(port)
 	//r.router.Run(fmt.Sprintf(":%s", port))
 }

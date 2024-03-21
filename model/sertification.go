@@ -32,3 +32,7 @@ type SertifPost struct {
 	ID   uuid.UUID             `json:"id"`
 	File *multipart.FileHeader `json:"file"`
 }
+
+type SertificationGet struct {
+	SertifID uuid.UUID `json:"sertif_id" binding:"required"`
+}

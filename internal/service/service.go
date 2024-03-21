@@ -25,12 +25,12 @@ func NewService(repository *repository.Repository, bcrypt bcrypt.Interface, jwt 
 		CourseService:            NewCourseService(repository.CourseRepository, supabase),
 		UserService:              NewUserService(repository.UserRepository, bcrypt, jwt, supabase),
 		SubcourseService:         NewSubcourseService(repository.SubcourseRepository, repository.CourseRepository, supabase),
-		UserJoinService:          NewUserJoinService(repository.UserJoinRepository, repository.UserRepository, repository.CourseRepository),
-		UserSubcourseService:     NewUserSubcourseService(repository.UserSubcourseRepository, repository.UserRepository, repository.SubcourseRepository),
+		UserJoinService:          NewUserJoinService(repository.UserJoinRepository, repository.UserRepository, repository.CourseRepository, jwt),
+		UserSubcourseService:     NewUserSubcourseService(repository.UserSubcourseRepository, repository.UserRepository, repository.SubcourseRepository, jwt),
 		JobService:               NewJobService(repository.JobRepository, supabase),
 		ApplicantService:         NewApplicantService(repository.ApplicantRepository, repository.JobRepository, repository.UserRepository, supabase),
 		SertificationService:     NewSertificationService(repository.SertificationRepository, supabase),
-		SertificationUserService: NewSertificationUserService(repository.SertificationRepository, repository.UserRepository, repository.SertificationUserRepository),
-		PaymentService:           NewPaymentService(repository.InvoiceRepository, repository.UserRepository, repository.CourseRepository, repository.SertificationRepository),
+		SertificationUserService: NewSertificationUserService(repository.SertificationRepository, repository.UserRepository, repository.SertificationUserRepository, jwt),
+		PaymentService:           NewPaymentService(repository.InvoiceRepository, repository.UserRepository, repository.CourseRepository, repository.SertificationRepository, jwt),
 	}
 }

@@ -5,12 +5,14 @@ import (
 	"includemy/entity"
 	"includemy/internal/repository"
 	"includemy/model"
+	"includemy/pkg/jwt"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 type IUserSubcourseService interface {
-	CreateUserSubcourse(param *model.UserSubcourseReq) (*entity.UserSubcourse, error)
+	CreateUserSubcourse(ctx *gin.Context, param *model.UserSubcourseReq) (*entity.UserSubcourse, error)
 	GetSubcourseOfUserFromOneCourse(temp entity.UserJoinCourse) (entity.UserJoinCourse, error)
 	UpdateUserSubcourse(id string, modifyCourse *model.UserSubcourseParam) (*entity.UserSubcourse, error)
 }
@@ -19,20 +21,20 @@ type UserSubcourseService struct {
 	UserSubcourse repository.IUserSubcourseRepository
 	user          repository.IUserRepository
 	subcourse     repository.ISubcourseRepository
+	jwt           jwt.Interface
 }
 
-func NewUserSubcourseService(UserSubcourse repository.IUserSubcourseRepository, user repository.IUserRepository, subcourse repository.ISubcourseRepository) IUserSubcourseService {
+func NewUserSubcourseService(UserSubcourse repository.IUserSubcourseRepository, user repository.IUserRepository, subcourse repository.ISubcourseRepository, jwt jwt.Interface) IUserSubcourseService {
 	return &UserSubcourseService{
 		UserSubcourse: UserSubcourse,
 		user:          user,
 		subcourse:     subcourse,
+		jwt:           jwt,
 	}
 }
 
-func (uss *UserSubcourseService) CreateUserSubcourse(param *model.UserSubcourseReq) (*entity.UserSubcourse, error) {
-	_, err := uss.user.GetUser(model.UserParam{
-		ID: param.UserID,
-	})
+func (uss *UserSubcourseService) CreateUserSubcourse(ctx *gin.Context, param *model.UserSubcourseReq) (*entity.UserSubcourse, error) {
+	user, err := uss.jwt.GetLogin(ctx)
 	if err != nil {
 		return nil, errors.New("Service: User not found")
 	}
@@ -44,7 +46,7 @@ func (uss *UserSubcourseService) CreateUserSubcourse(param *model.UserSubcourseR
 
 	UserSubcourse := &entity.UserSubcourse{
 		ID:          uuid.New(),
-		UserID:      param.UserID,
+		UserID:      user.ID,
 		SubcourseID: param.SubcourseID,
 		Checked:     param.Checked,
 	}

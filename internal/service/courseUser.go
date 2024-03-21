@@ -5,12 +5,14 @@ import (
 	"includemy/entity"
 	"includemy/internal/repository"
 	"includemy/model"
+	"includemy/pkg/jwt"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 type IUserJoinService interface {
-	CreateUserJoinCourse(param *model.CreateUserJoinCourse) (*entity.UserJoinCourse, error)
+	CreateUserJoinCourse(ctx *gin.Context, param *model.CourseGet) (*entity.UserJoinCourse, error)
 	GetUserJoinByID(id string) (*entity.UserJoinCourse, error)
 	DeleteUserJoinCourse(id string) error
 }
@@ -19,13 +21,15 @@ type UserJoinService struct {
 	UserJoin repository.IUserJoinRepository
 	user     repository.IUserRepository
 	course   repository.ICourseRepository
+	jwtAuth  jwt.Interface
 }
 
-func NewUserJoinService(UserJoin repository.IUserJoinRepository, user repository.IUserRepository, course repository.ICourseRepository) IUserJoinService {
+func NewUserJoinService(UserJoin repository.IUserJoinRepository, user repository.IUserRepository, course repository.ICourseRepository, jwt jwt.Interface) IUserJoinService {
 	return &UserJoinService{
 		UserJoin: UserJoin,
 		user:     user,
 		course:   course,
+		jwtAuth:  jwt,
 	}
 }
 
@@ -45,10 +49,8 @@ func (r *UserJoinService) DeleteUserJoinCourse(id string) error {
 	return nil
 }
 
-func (r *UserJoinService) CreateUserJoinCourse(param *model.CreateUserJoinCourse) (*entity.UserJoinCourse, error) {
-	_, err := r.user.GetUser(model.UserParam{
-		ID: param.UserID,
-	})
+func (r *UserJoinService) CreateUserJoinCourse(ctx *gin.Context, param *model.CourseGet) (*entity.UserJoinCourse, error) {
+	user, err := r.jwtAuth.GetLogin(ctx)
 	if err != nil {
 		return nil, errors.New("Service: User not found")
 	}
@@ -60,7 +62,7 @@ func (r *UserJoinService) CreateUserJoinCourse(param *model.CreateUserJoinCourse
 
 	userJoin := entity.UserJoinCourse{
 		ID:       uuid.New(),
-		UserID:   param.UserID,
+		UserID:   user.ID,
 		CourseID: param.CourseID,
 	}
 

@@ -20,14 +20,14 @@ func (r *Rest) DeleteUserJoinCourse(ctx *gin.Context) {
 }
 
 func (r *Rest) CreateUserJoinCourse(ctx *gin.Context) {
-	param := model.CreateUserJoinCourse{}
+	param := model.CourseGet{}
 	err := ctx.ShouldBindJSON(&param)
 	if err != nil {
 		response.Error(ctx, http.StatusBadRequest, "Failed to bind input", err)
 		return
 	}
 
-	join, err := r.service.UserJoinService.CreateUserJoinCourse(&param)
+	join, err := r.service.UserJoinService.CreateUserJoinCourse(ctx, &param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to join course", err)
 		return

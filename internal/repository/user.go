@@ -67,7 +67,7 @@ func (u *UserRepository) GetUserSertification(param model.UserParam) (entity.Use
 
 func (u *UserRepository) GetUserApplication(param model.UserParam) (entity.User, error) {
 	user := entity.User{}
-	err := u.db.Debug().Where(&param).Preload("Applicant").First(&user).Error
+	err := u.db.Debug().Where(&param).Preload("Applicant.Job").First(&user).Error
 
 	if err != nil {
 		return user, err

@@ -4,16 +4,18 @@ import (
 	"includemy/entity"
 	"includemy/internal/repository"
 	"includemy/model"
+	"includemy/pkg/jwt"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/midtrans/midtrans-go"
 	"github.com/midtrans/midtrans-go/snap"
 )
 
 type IPaymentService interface {
-	GetPaymentCourse(param *model.PaymentBind) (model.PaymentResponse, error)
+	GetPaymentCourse(ctx *gin.Context, param *model.PaymentBind) (model.PaymentResponse, error)
 	CallbackCourse(notificationPayload map[string]interface{})
-	GetPaymentSertif(param *model.PaymentBind) (model.PaymentResponse, error)
+	GetPaymentSertif(ctx *gin.Context, param *model.PaymentBind) (model.PaymentResponse, error)
 	CallbackSertif(notificationPayload map[string]interface{})
 }
 
@@ -22,21 +24,21 @@ type PaymentService struct {
 	User    repository.IUserRepository
 	Course  repository.ICourseRepository
 	Sertif  repository.ISertificationRepository
+	jwt     jwt.Interface
 }
 
-func NewPaymentService(invoice repository.IInvoiceRepository, user repository.IUserRepository, course repository.ICourseRepository, sertif repository.ISertificationRepository) *PaymentService {
+func NewPaymentService(invoice repository.IInvoiceRepository, user repository.IUserRepository, course repository.ICourseRepository, sertif repository.ISertificationRepository, jwt jwt.Interface) *PaymentService {
 	return &PaymentService{
 		Invoice: invoice,
 		User:    user,
 		Course:  course,
 		Sertif:  sertif,
+		jwt:     jwt,
 	}
 }
 
-func (p *PaymentService) GetPaymentCourse(param *model.PaymentBind) (model.PaymentResponse, error) {
-	_, err := p.User.GetUser(model.UserParam{
-		ID: param.UserID,
-	})
+func (p *PaymentService) GetPaymentCourse(ctx *gin.Context, param *model.PaymentBind) (model.PaymentResponse, error) {
+	user, err := p.jwt.GetLogin(ctx)
 	if err != nil {
 		return model.PaymentResponse{}, err
 	}
@@ -60,14 +62,13 @@ func (p *PaymentService) GetPaymentCourse(param *model.PaymentBind) (model.Payme
 	resp, err := snap.CreateTransaction(payReq)
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
 		OrderID:          payReq.TransactionDetails.OrderID,
-		UserID:           param.UserID.String(),
+		UserID:           user.ID.String(),
 		CourseorSertifID: param.ItemID.String(),
 		Status:           "pending",
 	})
 	if err != nil {
 		return model.PaymentResponse{}, err
 	}
-	
 
 	result := model.PaymentResponse{
 		Token:   resp.Token,
@@ -106,10 +107,8 @@ func (p *PaymentService) CallbackCourse(notificationPayload map[string]interface
 	}
 }
 
-func (p *PaymentService) GetPaymentSertif(param *model.PaymentBind) (model.PaymentResponse, error) {
-	_, err := p.User.GetUser(model.UserParam{
-		ID: param.UserID,
-	})
+func (p *PaymentService) GetPaymentSertif(ctx *gin.Context, param *model.PaymentBind) (model.PaymentResponse, error) {
+	user, err := p.jwt.GetLogin(ctx)
 	if err != nil {
 		return model.PaymentResponse{}, err
 	}
@@ -133,7 +132,7 @@ func (p *PaymentService) GetPaymentSertif(param *model.PaymentBind) (model.Payme
 	resp, err := snap.CreateTransaction(payReq)
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
 		OrderID:          payReq.TransactionDetails.OrderID,
-		UserID:           param.UserID.String(),
+		UserID:           user.ID.String(),
 		CourseorSertifID: param.ItemID.String(),
 		Status:           "pending",
 	})

@@ -5,12 +5,14 @@ import (
 	"includemy/entity"
 	"includemy/internal/repository"
 	"includemy/model"
+	"includemy/pkg/jwt"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 type ISertificationUserService interface {
-	CreateSertificationUser(param *model.CreateSertificationUser) (*entity.SertificationUser, error)
+	CreateSertificationUser(ctx *gin.Context, param *model.SertificationGet) (*entity.SertificationUser, error)
 	DeleteSertificationUser(id string) error
 }
 
@@ -18,20 +20,20 @@ type SertificationUserService struct {
 	SerPo         repository.ISertificationUserRepository
 	user          repository.IUserRepository
 	sertification repository.ISertificationRepository
+	jwt           jwt.Interface
 }
 
-func NewSertificationUserService(sertification repository.ISertificationRepository, user repository.IUserRepository, SerPo repository.ISertificationUserRepository) ISertificationUserService {
+func NewSertificationUserService(sertification repository.ISertificationRepository, user repository.IUserRepository, SerPo repository.ISertificationUserRepository, jwt jwt.Interface) ISertificationUserService {
 	return &SertificationUserService{
 		sertification: sertification,
 		user:          user,
 		SerPo:         SerPo,
+		jwt:           jwt,
 	}
 }
 
-func (ss *SertificationUserService) CreateSertificationUser(param *model.CreateSertificationUser) (*entity.SertificationUser, error) {
-	_, err := ss.user.GetUser(model.UserParam{
-		ID: param.UserID,
-	})
+func (ss *SertificationUserService) CreateSertificationUser(ctx *gin.Context, param *model.SertificationGet) (*entity.SertificationUser, error) {
+	user, err := ss.jwt.GetLogin(ctx)
 	if err != nil {
 		return nil, errors.New("Service: User not found")
 	}
@@ -43,7 +45,7 @@ func (ss *SertificationUserService) CreateSertificationUser(param *model.CreateS
 
 	register := entity.SertificationUser{
 		ID:              uuid.New(),
-		UserID:          param.UserID,
+		UserID:          user.ID,
 		SertificationID: param.SertifID,
 	}
 

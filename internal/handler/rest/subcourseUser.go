@@ -18,7 +18,7 @@ func (r *Rest) CreateUserSubcourse(ctx *gin.Context) {
 		return
 	}
 
-	userSub, err := r.service.UserSubcourseService.CreateUserSubcourse(&param)
+	userSub, err := r.service.UserSubcourseService.CreateUserSubcourse(ctx, &param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to join", err)
 		return

@@ -15,6 +15,7 @@ func (r *Rest) CreateApplicant(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&param)
 	if err != nil {
 		response.Error(ctx, http.StatusBadRequest, "Failed to bind input", err)
+
 		return
 	}
 

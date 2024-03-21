@@ -68,7 +68,7 @@ func (cr *CourseRepository) GetCourseByDissability(dissability string) ([]*entit
 
 func (cr *CourseRepository) GetSubcourseWithinCourse(param model.CourseGet) (entity.Course, error) {
 	course := entity.Course{}
-	err := cr.db.Debug().Where("id = ?", param.ID).Preload("Subcourse").First(&course).Error
+	err := cr.db.Debug().Where("id = ?", param.CourseID).Preload("Subcourse").First(&course).Error
 	if err != nil {
 		return course, errors.New("Repository: Failed to load subcourse within course")
 	}

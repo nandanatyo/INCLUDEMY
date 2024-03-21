@@ -29,7 +29,7 @@ type CourseSearch struct {
 }
 
 type CourseGet struct {
-	ID uuid.UUID `json:"id" binding:"required"`
+	CourseID uuid.UUID `json:"course_id" binding:"required"`
 }
 
 type CoursePhoto struct {

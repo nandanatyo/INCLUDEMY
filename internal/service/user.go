@@ -1,12 +1,12 @@
 package service
 
 import (
+	"errors"
 	"includemy/entity"
 	"includemy/internal/repository"
 	"includemy/model"
 	"includemy/pkg/bcrypt"
 	"includemy/pkg/jwt"
-	"includemy/pkg/response"
 	"includemy/pkg/supabase"
 
 	"github.com/gin-gonic/gin"
@@ -44,7 +44,7 @@ func NewUserService(user repository.IUserRepository, bcrypt bcrypt.Interface, jw
 func (u *UserService) Register(param model.UserReq) (entity.User, error) {
 	hashPassword, err := u.bcrypt.GenerateFromPassword(param.Password)
 	if err != nil {
-		return entity.User{}, response.ErrHashingPassword
+		return entity.User{}, errors.New("Service: Failed to hash password")
 	}
 
 	user := entity.User{
@@ -64,7 +64,7 @@ func (u *UserService) Register(param model.UserReq) (entity.User, error) {
 
 	_, err = u.user.CreateUser(user)
 	if err != nil {
-		return user, response.ErrFailedCreateUser
+		return user, errors.New("Service: Failed to create user")
 	}
 	return user, nil
 }
@@ -72,7 +72,7 @@ func (u *UserService) Register(param model.UserReq) (entity.User, error) {
 func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, error) {
 	result := model.UserLoginResponse{}
 	if param.Email == "" && param.Username == "" {
-		return result, response.ErrEmptyRequest
+		return result, errors.New("Service: Email or Username is required")
 	}
 
 	user, err := u.user.GetUser(model.UserParam{
@@ -81,12 +81,12 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, err
 	})
 
 	if err != nil {
-		return result, response.ErrUserNotFound
+		return result, errors.New("Service: User not found")
 	}
 
 	err = u.bcrypt.CompareHashAndPassword(user.Password, param.Password)
 	if err != nil {
-		return result, response.ErrMismatchPassword
+		return result, errors.New("Service: Password is incorrect")
 	}
 
 	token, err := u.jwtAuth.CreateToken(user.ID)

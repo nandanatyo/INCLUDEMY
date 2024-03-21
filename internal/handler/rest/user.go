@@ -17,10 +17,7 @@ func (r *Rest) Register(ctx *gin.Context) {
 	}
 
 	user, err := r.service.UserService.Register(param)
-	if customErr, ok := err.(*response.CustomError); ok {
-		response.Error(ctx, customErr.Code, customErr.Message, nil)
-		return
-	} else if err != nil {
+	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to register new user", err)
 		return
 	}

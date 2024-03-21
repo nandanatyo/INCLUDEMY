@@ -9,14 +9,14 @@ import (
 )
 
 func (r *Rest) CreatSertificationUser(ctx *gin.Context) {
-	param := model.CreateSertificationUser{}
+	param := model.SertificationGet{}
 	err := ctx.ShouldBindJSON(&param)
 	if err != nil {
 		response.Error(ctx, http.StatusBadRequest, "Failed to bind input", err)
 		return
 	}
 
-	regis, err := r.service.SertificationUserService.CreateSertificationUser(&param)
+	regis, err := r.service.SertificationUserService.CreateSertificationUser(ctx, &param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to register sertification", err)
 		return

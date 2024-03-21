@@ -16,7 +16,7 @@ func (r *Rest) UserJoinPremiumCourse(ctx *gin.Context) {
 		return
 	}
 
-	result, err := r.service.PaymentService.GetPaymentCourse(&param)
+	result, err := r.service.PaymentService.GetPaymentCourse(ctx, &param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to get url payment", err)
 		return
@@ -49,7 +49,7 @@ func (r *Rest) UserJoinPremiumSertif(ctx *gin.Context) {
 		return
 	}
 
-	result, err := r.service.PaymentService.GetPaymentSertif(&param)
+	result, err := r.service.PaymentService.GetPaymentSertif(ctx, &param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to get url payment", err)
 		return

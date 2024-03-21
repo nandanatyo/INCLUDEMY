@@ -54,7 +54,7 @@ func (cs *CourseService) CreateCourse(courseReq *model.CourseReq) (*entity.Cours
 
 	course, err := cs.course.CreateCourse(course)
 	if err != nil {
-		return nil, errors.New("Service: Failed to create course")
+		return nil, errors.Join(err, errors.New("Service: Failed to create course"))
 	}
 	return course, nil
 }
