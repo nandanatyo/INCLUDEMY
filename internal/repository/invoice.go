@@ -45,7 +45,7 @@ func (u *InvoiceRepository) UpdateInvoice(status string, orderID string) (*entit
 	updated := entity.Invoice{
 		Status: status,
 	}
-	if err := u.db.Model(&UpdateInvoice).Updates(&updated).Error; err != nil {
+	if err := u.db.Debug().Model(&UpdateInvoice).Updates(&updated).Error; err != nil {
 		return nil, err
 	}
 	return &updated, nil
