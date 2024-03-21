@@ -35,6 +35,7 @@ func (r *Rest) MountEndpoints() {
 	// r.router.POST("/register/goole/login", r.GoogleLogin) //register
 	// r.router.GET(("/google/callback"), r.GoogleCallback) //register
 	r.router.POST("/login", r.Login)             //login
+	r.router.POST("/course/payment", r.Callback) // mendapatkan status payment
 	profile.POST("/upload-photo", r.UploadPhoto) //upload photo profile user
 	profile.POST("/update-user", r.UpdateUser)   //mengupdate profile user
 
@@ -49,7 +50,6 @@ func (r *Rest) MountEndpoints() {
 	user.GET("/course", r.GetUserCourse)                              //mendapatkan course yang user ikuti
 	user.PATCH("/update-subcourse/:id", r.UpdateUserSubcourse)        //mengupdate subCourse dari user apakah di checklist atau tidak
 	user.POST("/join-premium-course", r.UserJoinPremiumCourse)        //mendapatkan url payment
-	user.POST("/course/payment", r.Callback)                          // mendapatkan status payment
 	user.POST("/join-premium-sertification", r.UserJoinPremiumSertif) //mendapatkan url payment
 	user.POST("sertification/payment", r.CallbackSertif)              // mendapatkan status payment
 
