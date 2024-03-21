@@ -15,7 +15,7 @@ import (
 
 type IUserService interface {
 	Register(param model.UserReq) (entity.User, error)
-	Login(param model.UserLogin) (model.UserLoginResponse, error)
+	Login(param model.UserLogin) (model.UserLoginResponse, *entity.User , error)
 	GetUser(param model.UserParam) (entity.User, error)
 	UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error)
 	UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (entity.User, error)
@@ -69,10 +69,10 @@ func (u *UserService) Register(param model.UserReq) (entity.User, error) {
 	return user, nil
 }
 
-func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, error) {
+func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, *entity.User, error) {
 	result := model.UserLoginResponse{}
 	if param.Email == "" && param.Username == "" {
-		return result, errors.New("Service: Email or Username is required")
+		return result, nil, errors.New("Service: Email or Username is required")
 	}
 
 	user, err := u.user.GetUser(model.UserParam{
@@ -81,18 +81,18 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, err
 	})
 
 	if err != nil {
-		return result, errors.New("Service: User not found")
+		return result, nil,  errors.New("Service: User not found")
 	}
 
 	err = u.bcrypt.CompareHashAndPassword(user.Password, param.Password)
 	if err != nil {
-		return result, errors.New("Service: Password is incorrect")
+		return result, nil, errors.New("Service: Password is incorrect")
 	}
 
 	token, err := u.jwtAuth.CreateToken(user.ID)
 	result.ID = user.ID
 	if err != nil {
-		return result, err
+		return result, nil, err
 	}
 	result.Token = token
 	if user.Role == 1 {
@@ -100,7 +100,7 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, err
 	} else {
 		result.Role = "Is an user"
 	}
-	return result, nil
+	return result, &user , nil
 }
 
 func (u *UserService) GetUser(param model.UserParam) (entity.User, error) {
