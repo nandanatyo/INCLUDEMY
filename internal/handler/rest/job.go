@@ -88,7 +88,6 @@ func (r *Rest) GetJobByAny(ctx *gin.Context) {
 		jobParam.Dissability = dissability
 	}
 
-
 	job, err := r.service.JobService.GetJobByAny(jobParam)
 	if err != nil {
 		response.Error(ctx, http.StatusNotFound, "Failed to find job", err)

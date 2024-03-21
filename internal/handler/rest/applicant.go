@@ -63,6 +63,3 @@ func (r *Rest) UploadApplicantFile(ctx *gin.Context) {
 
 	response.Success(ctx, http.StatusOK, "Success to upload photo", app)
 }
-
-
-

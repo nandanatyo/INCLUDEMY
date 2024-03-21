@@ -22,7 +22,7 @@ type ApplicantService struct {
 	applicantRepository repository.IApplicantRepository
 	jobRepository       repository.IJobRepository
 	user                repository.IUserRepository
-	supabase 		  supabase.Interface
+	supabase            supabase.Interface
 }
 
 func NewApplicantService(applicantRepository repository.IApplicantRepository, jobRepository repository.IJobRepository, user repository.IUserRepository, supabase supabase.Interface) IApplicantService {
@@ -30,7 +30,7 @@ func NewApplicantService(applicantRepository repository.IApplicantRepository, jo
 		applicantRepository: applicantRepository,
 		jobRepository:       jobRepository,
 		user:                user,
-		supabase: 		  supabase,
+		supabase:            supabase,
 	}
 }
 
@@ -48,9 +48,9 @@ func (as *ApplicantService) CreateApplicantService(param *model.ApplicantReq) (*
 	}
 
 	register := entity.Applicant{
-		ID:     uuid.New(),
-		UserID: param.UserID,
-		JobID:  param.JobID,
+		ID:      uuid.New(),
+		UserID:  param.UserID,
+		JobID:   param.JobID,
 		MinWage: param.MinWage,
 		MaxWage: param.MaxWage,
 	}
@@ -92,9 +92,9 @@ func (as *ApplicantService) UploadApplicantFile(param *entity.ParamAppFile) (*en
 	}
 
 	appFile := entity.ApplicantFile{
-		ID:    uuid.New(),
+		ID:          uuid.New(),
 		ApplicantID: app.ID,
-		File:  link,
+		File:        link,
 	}
 
 	appDone, err := as.applicantRepository.CreateAppFile(&appFile)

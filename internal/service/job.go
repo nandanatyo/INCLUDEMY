@@ -86,7 +86,7 @@ func (js *JobService) GetJobByAny(param model.JobSearch) ([]*entity.Job, error) 
 			return nil, errors.New("Service: Job not found by field")
 		}
 		return job, nil
-	}else {
+	} else {
 		return nil, errors.New("Service: No search criteria provided")
 	}
 }

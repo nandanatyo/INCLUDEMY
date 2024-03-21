@@ -25,13 +25,12 @@ func NewApplicantRepository(db *gorm.DB) IApplicantRepository {
 }
 
 func (ar *ApplicantRepository) CreateApplicant(regist *entity.Applicant) (*entity.Applicant, error) {
-    if err := ar.db.Create(&regist).Error; err != nil {
-        log.Printf("Repository: Failed to create applicant: %v", err)
-        return nil, fmt.Errorf("Repository: Failed to create applicant: %w", err)
-    }
-    return regist, nil
+	if err := ar.db.Create(&regist).Error; err != nil {
+		log.Printf("Repository: Failed to create applicant: %v", err)
+		return nil, fmt.Errorf("Repository: Failed to create applicant: %w", err)
+	}
+	return regist, nil
 }
-
 
 func (ar *ApplicantRepository) CreateAppFile(appFile *entity.ApplicantFile) (*entity.ApplicantFile, error) {
 	err := ar.db.Create(&appFile).Error

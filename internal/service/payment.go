@@ -57,7 +57,7 @@ func (p *PaymentService) GetPaymentCourse(param *model.PaymentBind) (model.Payme
 		},
 	}
 
-	resp, _ := snap.CreateTransaction(payReq)
+	resp, err := snap.CreateTransaction(payReq)
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
 		OrderID:          payReq.TransactionDetails.OrderID,
 		UserID:           param.UserID.String(),
@@ -67,6 +67,7 @@ func (p *PaymentService) GetPaymentCourse(param *model.PaymentBind) (model.Payme
 	if err != nil {
 		return model.PaymentResponse{}, err
 	}
+	
 
 	result := model.PaymentResponse{
 		Token:   resp.Token,
@@ -129,7 +130,7 @@ func (p *PaymentService) GetPaymentSertif(param *model.PaymentBind) (model.Payme
 		},
 	}
 
-	resp, _ := snap.CreateTransaction(payReq)
+	resp, err := snap.CreateTransaction(payReq)
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
 		OrderID:          payReq.TransactionDetails.OrderID,
 		UserID:           param.UserID.String(),

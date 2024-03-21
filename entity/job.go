@@ -19,7 +19,7 @@ type Job struct {
 	HowMuchWorker string      `json:"how_much_worker" gorm:"type:varchar(255);not null;"`
 	Tags          string      `json:"tags" gorm:"type:varchar(255);not null;"`
 	Field         string      `json:"field" gorm:"type:varchar(255);not null;"`
-	Dissability  string      `json:"dissability" gorm:"type:varchar(255);not null;"`
+	Dissability   string      `json:"dissability" gorm:"type:varchar(255);not null;"`
 	Applicant     []Applicant `gorm:"foreignKey:JobID;references:ID"`
 	JobFile       []JobFile   `json:"job_file" gorm:"foreignKey:JobID"`
 	CreatedAt     time.Time   `json:"createdAt" gorm:"autoCreateTime"`

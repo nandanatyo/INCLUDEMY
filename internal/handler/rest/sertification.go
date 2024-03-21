@@ -35,7 +35,6 @@ func (r *Rest) GetSertificationByTitleOrID(ctx *gin.Context) {
 	dissability := ctx.Query("dissability")
 	field := ctx.Query("field")
 
-
 	if title != "" {
 		searchParam.Title = title
 	}
@@ -60,7 +59,6 @@ func (r *Rest) GetSertificationByTitleOrID(ctx *gin.Context) {
 	if field != "" {
 		searchParam.Field = field
 	}
-	
 
 	sertif, err := r.service.SertificationService.GetSertificationByAny(searchParam)
 	if err != nil {
