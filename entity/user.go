@@ -11,7 +11,7 @@ type User struct {
 	Name               string               `json:"name" gorm:"type:varchar(255);not null;"`
 	Email              string               `json:"email" gorm:"type:varchar(255);not null;unique"`
 	Password           string               `json:"password" gorm:"type:varchar(255);not null;"`
-	Role               int                  `json:"role" gorm:"foreinKey:ID; references:roles; not null;"`
+	Role               int                  `json:"role" gorm:"foreignKey:ID; references:roles; not null;"`
 	Born               time.Time            `json:"born" gorm:"type:date;not null;"`
 	Gender             string               `json:"gender" gorm:"type:varchar(10);not null;"`
 	LastJob            string               `json:"lastjob" gorm:"type:varchar(255)"`
@@ -23,7 +23,7 @@ type User struct {
 	UserJoinCourse     []UserJoinCourse     `json:"user_join_course" gorm:"foreignKey:UserID;references:ID"`
 	Dissability        string               `json:"dissability" gorm:"type:varchar(255)"`
 	Preference         string               `json:"preference" gorm:"type:varchar(255)"`
-	Applicant          []Applicant          `gorm:"foreignKey:UserID;references:ID"`
+	Applicant          []Applicant          `json:"applicant" gorm:"foreignKey:UserID;references:ID"`
 	SertificationUser  []SertificationUser  `json:"sertification_user" gorm:"foreignKey:UserID;references:ID"`
 	OrderCourse        []OrderCourse        `json:"order_course" gorm:"foreignKey:UserID;references:ID"`
 	OrderSertification []OrderSertification `json:"order_sertification" gorm:"foreignKey:UserID;references:ID"`

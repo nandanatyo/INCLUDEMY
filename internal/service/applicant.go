@@ -44,7 +44,7 @@ func (as *ApplicantService) CreateApplicantService(param *model.ApplicantReq) (*
 
 	job, err := as.jobRepository.GetJobByID(param.JobID.String())
 	if err != nil {
-		return nil, errors.New("Service: Sertification not found")
+		return nil, errors.New("Service: Job not found")
 	}
 
 	register := entity.Applicant{

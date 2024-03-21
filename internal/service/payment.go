@@ -11,9 +11,9 @@ import (
 )
 
 type IPaymentService interface {
-	GetPaymentCourse(param *model.CreateUserJoinCourse) (model.PaymentResponse, error)
+	GetPaymentCourse(param *model.PaymentBind) (model.PaymentResponse, error)
 	CallbackCourse(notificationPayload map[string]interface{})
-	GetPaymentSertif(param *model.CreateSertificationUser) (model.PaymentResponse, error)
+	GetPaymentSertif(param *model.PaymentBind) (model.PaymentResponse, error)
 	CallbackSertif(notificationPayload map[string]interface{})
 }
 
@@ -33,7 +33,7 @@ func NewPaymentService(invoice repository.IInvoiceRepository, user repository.IU
 	}
 }
 
-func (p *PaymentService) GetPaymentCourse(param *model.CreateUserJoinCourse) (model.PaymentResponse, error) {
+func (p *PaymentService) GetPaymentCourse(param *model.PaymentBind) (model.PaymentResponse, error) {
 	_, err := p.User.GetUser(model.UserParam{
 		ID: param.UserID,
 	})
@@ -41,7 +41,7 @@ func (p *PaymentService) GetPaymentCourse(param *model.CreateUserJoinCourse) (mo
 		return model.PaymentResponse{}, err
 	}
 
-	course, err := p.Course.GetCourseByID(param.CourseID.String())
+	course, err := p.Course.GetCourseByID(param.ItemID.String())
 	if err != nil {
 		return model.PaymentResponse{}, err
 	}
@@ -61,7 +61,7 @@ func (p *PaymentService) GetPaymentCourse(param *model.CreateUserJoinCourse) (mo
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
 		OrderID:          payReq.TransactionDetails.OrderID,
 		UserID:           param.UserID.String(),
-		CourseorSertifID: param.CourseID.String(),
+		CourseorSertifID: param.ItemID.String(),
 		Status:           "pending",
 	})
 	if err != nil {
@@ -105,7 +105,7 @@ func (p *PaymentService) CallbackCourse(notificationPayload map[string]interface
 	}
 }
 
-func (p *PaymentService) GetPaymentSertif(param *model.CreateSertificationUser) (model.PaymentResponse, error) {
+func (p *PaymentService) GetPaymentSertif(param *model.PaymentBind) (model.PaymentResponse, error) {
 	_, err := p.User.GetUser(model.UserParam{
 		ID: param.UserID,
 	})
@@ -113,7 +113,7 @@ func (p *PaymentService) GetPaymentSertif(param *model.CreateSertificationUser) 
 		return model.PaymentResponse{}, err
 	}
 
-	sertif, err := p.Sertif.GetSertificationByID(param.SertifID.String())
+	sertif, err := p.Sertif.GetSertificationByID(param.ItemID.String())
 	if err != nil {
 		return model.PaymentResponse{}, err
 	}
@@ -133,7 +133,7 @@ func (p *PaymentService) GetPaymentSertif(param *model.CreateSertificationUser) 
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
 		OrderID:          payReq.TransactionDetails.OrderID,
 		UserID:           param.UserID.String(),
-		CourseorSertifID: param.SertifID.String(),
+		CourseorSertifID: param.ItemID.String(),
 		Status:           "pending",
 	})
 	if err != nil {

@@ -19,6 +19,9 @@ func Migrate(db *gorm.DB) error {
 		&entity.SertificationUser{},
 		&entity.JobFile{},
 		&entity.ApplicantFile{},
+		&entity.PaymentCourse{},
+		&entity.PaymentSertif{},
+		&entity.Invoice{},
 	); err != nil {
 		return err
 	}

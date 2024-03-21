@@ -16,9 +16,4 @@ type UserJoinCourse struct {
 	UpdatedAt     time.Time       `json:"updatedAt" gorm:"autoUpdateTime"`
 }
 
-type Invoice struct {
-	OrderID          string    `json:"order_id" gorm:"type:varchar(36);not null;"`
-	UserID           string    `json:"user_id" gorm:"type:varchar(36);not null;"`
-	CourseorSertifID string    `json:"course_id" gorm:"type:varchar(36);not null;"`
-	Status           string    `json:"status" gorm:"type:varchar(36);not null;"`
-}
+

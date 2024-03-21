@@ -9,7 +9,7 @@ import (
 )
 
 func (r *Rest) UserJoinPremiumCourse(ctx *gin.Context) {
-	param := model.CreateUserJoinCourse{}
+	param := model.PaymentBind{}
 	err := ctx.ShouldBindJSON(&param)
 	if err != nil {
 		response.Error(ctx, http.StatusBadRequest, "Failed to bind input", err)
@@ -42,7 +42,7 @@ func (r *Rest) Callback(ctx *gin.Context) {
 }
 
 func (r *Rest) UserJoinPremiumSertif(ctx *gin.Context) {
-	param := model.CreateSertificationUser{}
+	param := model.PaymentBind{}
 	err := ctx.ShouldBindJSON(&param)
 	if err != nil {
 		response.Error(ctx, http.StatusBadRequest, "Failed to bind input", err)
