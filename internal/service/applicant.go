@@ -6,6 +6,7 @@ import (
 	"includemy/entity"
 	"includemy/internal/repository"
 	"includemy/model"
+	"includemy/pkg/jwt"
 	"includemy/pkg/supabase"
 	"time"
 
@@ -24,19 +25,21 @@ type ApplicantService struct {
 	jobRepository       repository.IJobRepository
 	user                repository.IUserRepository
 	supabase            supabase.Interface
+	jwt           jwt.Interface
 }
 
-func NewApplicantService(applicantRepository repository.IApplicantRepository, jobRepository repository.IJobRepository, user repository.IUserRepository, supabase supabase.Interface) IApplicantService {
+func NewApplicantService(applicantRepository repository.IApplicantRepository, jobRepository repository.IJobRepository, user repository.IUserRepository, supabase supabase.Interface, jwt jwt.Interface) IApplicantService {
 	return &ApplicantService{
 		applicantRepository: applicantRepository,
 		jobRepository:       jobRepository,
 		user:                user,
 		supabase:            supabase,
+		jwt: jwt,
 	}
 }
 
 func (as *ApplicantService) CreateApplicantService(ctx *gin.Context, param *model.ApplicantReq) (*entity.Applicant, error) {
-	user, err := as.user.GetUser(param.UserID.String())
+	user, err := as.jwt.GetLogin(ctx)
 	if err != nil {
 		return nil, errors.New("Service: User not found")
 	}
