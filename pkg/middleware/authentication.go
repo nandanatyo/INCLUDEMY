@@ -18,7 +18,6 @@ func (m *middleware) AuthenticateUser(ctx *gin.Context) {
 		return
 	}
 
-	//cth: Bearer token
 	token := strings.Split(bearer, " ")[1]
 
 	userId, err := m.jwtAuth.ValidateToken(token)

@@ -120,7 +120,6 @@ func parseUpdateUser(modifyUser *model.UserReq, user *entity.User) (*entity.User
 	if modifyUser.LastEdu != "" {
 		user.LastEdu = modifyUser.LastEdu
 	}
-
 	if modifyUser.LastJob != "" {
 		user.LastJob = modifyUser.LastJob
 	}

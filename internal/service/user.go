@@ -1,16 +1,22 @@
 package service
 
 import (
+	// "crypto/rand"
+	// "encoding/hex"
 	"errors"
+	"fmt"
 	"includemy/entity"
 	"includemy/internal/repository"
 	"includemy/model"
 	"includemy/pkg/bcrypt"
 	"includemy/pkg/jwt"
 	"includemy/pkg/supabase"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	// "gopkg.in/mail.v2"
 )
 
 type IUserService interface {
@@ -41,6 +47,39 @@ func NewUserService(user repository.IUserRepository, bcrypt bcrypt.Interface, jw
 		supabase: supabase,
 	}
 }
+
+
+// func sendVerificationEmail(to string, dialer *mail.Dialer, repo *repository.UserRepository) error {
+// 	token, err := GenerateSecureToken(5)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	m := mail.NewMessage()
+// 	m.SetHeader("From", "sender@example.com")
+// 	m.SetHeader("To", to)
+// 	m.SetHeader("Subject", "Email Verification")
+// 	m.SetBody("text/html", "Please verify your email by clicking on the following link: <a href=\"http://localhost:8080/verify?token="+token+"\">Verify Email</a>")
+
+// 	if err := dialer.DialAndSend(m); err != nil {
+// 		return err
+// 	}
+
+// 	return nil
+// }
+
+
+// func (s *UserService) VerifyUser(token string) error {
+// 	return s.repo.VerifyUser(token)
+// }
+
+// func GenerateSecureToken(length int) (string, error) {
+// 	bytes := make([]byte, length)
+// 	if _, err := rand.Read(bytes); err != nil {
+// 		return "", err
+// 	}
+// 	return hex.EncodeToString(bytes), nil
+// }
 
 func (u *UserService) Register(param model.UserReq) (entity.User, error) {
 	hashPassword, err := u.bcrypt.GenerateFromPassword(param.Password)
@@ -141,6 +180,8 @@ func (u *UserService) UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (en
 			return user, err
 		}
 	}
+
+	param.Photo.Filename = fmt.Sprintf("%s.%s", strings.ReplaceAll(time.Now().String(), " ", ""), strings.Split(param.Photo.Filename, ".")[1])
 
 	link, err := u.supabase.UploadFile(param.Photo)
 	if err != nil {

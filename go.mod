@@ -8,6 +8,13 @@ require (
 )
 
 require (
+	github.com/jinzhu/gorm v1.9.16 // indirect
+	github.com/lib/pq v1.10.9 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+	gopkg.in/mail.v2 v2.3.1 // indirect
+)
+
+require (
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/midtrans/midtrans-go v1.3.7
@@ -18,6 +25,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
+	github.com/gin-contrib/cors v1.7.0
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-contrib/timeout v0.0.7
 	github.com/gin-gonic/gin v1.9.1
