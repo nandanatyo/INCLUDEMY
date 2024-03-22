@@ -6,13 +6,11 @@ import (
 	"includemy/internal/repository"
 	"includemy/model"
 	"includemy/pkg/jwt"
-
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 type IUserSubcourseService interface {
-	CreateUserSubcourse(ctx *gin.Context, param *model.UserSubcourseReq) (*entity.UserSubcourse, error)
+	CreateUserSubcourse(param *model.UserSubcourseReq) (*entity.UserSubcourse, error)
 	GetSubcourseOfUserFromOneCourse(temp entity.UserJoinCourse) (entity.UserJoinCourse, error)
 	UpdateUserSubcourse(id string, modifyCourse *model.UserSubcourseParam) (*entity.UserSubcourse, error)
 }
@@ -33,8 +31,8 @@ func NewUserSubcourseService(UserSubcourse repository.IUserSubcourseRepository, 
 	}
 }
 
-func (uss *UserSubcourseService) CreateUserSubcourse(ctx *gin.Context, param *model.UserSubcourseReq) (*entity.UserSubcourse, error) {
-	user, err := uss.jwt.GetLogin(ctx)
+func (uss *UserSubcourseService) CreateUserSubcourse(param *model.UserSubcourseReq) (*entity.UserSubcourse, error) {
+	_, err := uss.user.GetUser(param.UserID.String())
 	if err != nil {
 		return nil, errors.New("Service: User not found")
 	}
@@ -46,7 +44,7 @@ func (uss *UserSubcourseService) CreateUserSubcourse(ctx *gin.Context, param *mo
 
 	UserSubcourse := &entity.UserSubcourse{
 		ID:          uuid.New(),
-		UserID:      user.ID,
+		UserID:      param.UserID,
 		SubcourseID: param.SubcourseID,
 		Checked:     param.Checked,
 	}
