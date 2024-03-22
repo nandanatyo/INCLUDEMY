@@ -25,7 +25,7 @@ type IUserService interface {
 	GetUser(ctx *gin.Context) (entity.User, error)
 	GetUserParam(param model.UserParam) (entity.User, error)
 	UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error)
-	UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (entity.User, error)
+	UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (*entity.User, error)
 	GetUserCourse(ctx *gin.Context) (entity.User, error)
 	GetUserCertification(ctx *gin.Context) (entity.User, error)
 	GetApplication(ctx *gin.Context) (entity.User, error)
@@ -168,16 +168,16 @@ func (u *UserService) UpdateUser(ctx *gin.Context, param *model.UserReq) (*entit
 	return user, nil
 }
 
-func (u *UserService) UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (entity.User, error) {
+func (u *UserService) UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (*entity.User, error) {
 	user, err := u.jwtAuth.GetLogin(ctx)
 	if err != nil {
-		return user, err
+		return nil, err
 	}
 
 	if user.PhotoLink != "" {
 		err := u.supabase.Delete(user.PhotoLink)
 		if err != nil {
-			return user, err
+			return nil, err
 		}
 	}
 
@@ -185,15 +185,15 @@ func (u *UserService) UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (en
 
 	link, err := u.supabase.UploadFile(param.Photo)
 	if err != nil {
-		return user, err
+		return nil, err
 	}
 
-	_, err = u.user.UpdateUser(&model.UserReq{
+	userUp, err := u.user.UpdateUser(&model.UserReq{
 		PhotoLink: link}, user.ID.String())
 	if err != nil {
-		return user, err
+		return nil, err
 	}
-	return user, nil
+	return userUp, nil
 }
 
 func (u *UserService) GetUserCourse(ctx *gin.Context) (entity.User, error) {
