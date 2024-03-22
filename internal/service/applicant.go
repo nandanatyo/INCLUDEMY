@@ -14,7 +14,7 @@ import (
 )
 
 type IApplicantService interface {
-	CreateApplicantService(ctx *gin.Context, param *model.ApplicantReq) (*entity.Applicant, error) 
+	CreateApplicantService(ctx *gin.Context, param *model.ApplicantReq) (*entity.Applicant, error)
 	DeleteApplication(id string) error
 	UploadApplicantFile(param *entity.ParamAppFile) (*entity.ApplicantFile, error)
 }

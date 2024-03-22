@@ -30,7 +30,7 @@ func (u *InvoiceRepository) CreateInvoice(invoice *entity.Invoice) (*entity.Invo
 
 func (u *InvoiceRepository) GetInvoiceByID(id string) (*entity.Invoice, error) {
 	var invoice entity.Invoice
-	if err := u.db.Debug().Where("id = ?", id).First(&invoice).Error; err != nil {
+	if err := u.db.Debug().Where("order_id = ?", id).First(&invoice).Error; err != nil {
 		return nil, err
 	}
 	return &invoice, nil

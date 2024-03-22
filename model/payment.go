@@ -3,7 +3,8 @@ package model
 import "github.com/google/uuid"
 
 type PaymentBind struct {
-	ItemID uuid.UUID `json:"item_id" binding:"required"`
+	ItemType string    `json:"item_name" binding:"required"`
+	ItemID   uuid.UUID `json:"item_id" binding:"required"`
 }
 
 type PaymentRequest struct {

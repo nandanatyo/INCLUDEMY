@@ -33,13 +33,13 @@ func (r *Rest) Login(ctx *gin.Context) {
 		return
 	}
 
-	result, user, err := r.service.UserService.Login(param)
+	result, err := r.service.UserService.Login(param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to login", err)
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, "Succes to Login, Token"+result.Token, user)
+	response.Success(ctx, http.StatusOK, "Succes to Login", result)
 
 }
 

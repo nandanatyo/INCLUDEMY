@@ -31,26 +31,24 @@ func (r *Rest) MountEndpoints() {
 	search := r.router.Group("/search")
 
 	//User
-	r.router.POST("/register", r.Register) //register
+	r.router.POST("/register", r.Register)       //register
 	r.router.POST("/login", r.Login)             //login
 	r.router.POST("/course/payment", r.Callback) // mendapatkan status payment
 	profile.POST("/upload-photo", r.UploadPhoto) //upload photo profile user
 	profile.POST("/update-user", r.UpdateUser)   //mengupdate profile user
-	profile.GET("/user", r.GetUser)              //melihat profile user
+	profile.GET("/get-user", r.GetUser)          //melihat profile user
 
 	admin.DELETE("/delete-user/:id", r.DeleteUser) //menghapus user
 
 	//Course-Subcourse
 	search.GET("/course/", r.GetCourseByAny) //melihat Course berdasarkan id atau title
 
-	user.GET("/course/subcourse", r.GetSubCourseWithinCourse)         //melihat subCourse dalam Course
-	user.POST("/join-course", r.CreateUserJoinCourse)                 //mendaftar Course
-	user.POST("/join-course/subcourse", r.CreateUserSubcourse)        //user otomatis mendaftar subCourse (logika dari FE)
-	user.GET("/course", r.GetUserCourse)                              //mendapatkan course yang user ikuti
-	user.PATCH("/update-subcourse/:id", r.UpdateUserSubcourse)        //mengupdate subCourse dari user apakah di checklist atau tidak
-	user.POST("/join-premium-course", r.UserJoinPremiumCourse)        //mendapatkan url payment
-	user.POST("/join-premium-sertification", r.UserJoinPremiumSertif) //mendapatkan url payment
-	user.POST("sertification/payment", r.CallbackSertif)              // mendapatkan status payment
+	user.GET("/course/subcourse", r.GetSubCourseWithinCourse)  //melihat subCourse dalam Course
+	user.POST("/join-course", r.CreateUserJoinCourse)          //mendaftar Course
+	user.POST("/join-course/subcourse", r.CreateUserSubcourse) //user otomatis mendaftar subCourse (logika dari FE)
+	user.GET("/course", r.GetUserCourse)                       //mendapatkan course yang user ikuti
+	user.PATCH("/update-subcourse/:id", r.UpdateUserSubcourse) //mengupdate subCourse dari user apakah di checklist atau tidak
+	user.POST("/join-premium-course", r.UserJoinPremiumCourse) //mendapatkan url payment
 
 	admin.POST("/create-course", r.CreateCourse)                                     //membuat Course
 	admin.PATCH("/update-course/:id", r.UpdateCourse)                                //mengupdate Course
@@ -95,6 +93,4 @@ func (r *Rest) Run() {
 		port = "5000"
 	}
 	r.router.Run(fmt.Sprintf(":%s", port))
-	// r.router.Run(port)
-	//r.router.Run(fmt.Sprintf(":%s", port))
 }

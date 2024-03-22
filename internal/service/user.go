@@ -15,7 +15,7 @@ import (
 
 type IUserService interface {
 	Register(param model.UserReq) (entity.User, error)
-	Login(param model.UserLogin) (model.UserLoginResponse, *entity.User, error)
+	Login(param model.UserLogin) (model.UserLoginResponse, error)
 	GetUser(ctx *gin.Context) (entity.User, error)
 	GetUserParam(param model.UserParam) (entity.User, error)
 	UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error)
@@ -70,10 +70,10 @@ func (u *UserService) Register(param model.UserReq) (entity.User, error) {
 	return user, nil
 }
 
-func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, *entity.User, error) {
+func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, error) {
 	result := model.UserLoginResponse{}
 	if param.Email == "" && param.Username == "" {
-		return result, nil, errors.New("Service: Email or Username is required")
+		return result, errors.New("Service: Email or Username is required")
 	}
 
 	user, err := u.user.GetUserParam(model.UserParam{
@@ -82,18 +82,18 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, *en
 	})
 
 	if err != nil {
-		return result, nil, errors.New("Service: User not found")
+		return result, errors.New("Service: User not found")
 	}
 
 	err = u.bcrypt.CompareHashAndPassword(user.Password, param.Password)
 	if err != nil {
-		return result, nil, errors.New("Service: Password is incorrect")
+		return result, errors.New("Service: Password is incorrect")
 	}
 
 	token, err := u.jwtAuth.CreateToken(user.ID)
 	result.ID = user.ID
 	if err != nil {
-		return result, nil, err
+		return result, err
 	}
 	result.Token = token
 	if user.Role == 1 {
@@ -101,7 +101,7 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, *en
 	} else {
 		result.Role = "Is an user"
 	}
-	return result, &user, nil
+	return result, nil
 }
 
 func (u *UserService) GetUser(ctx *gin.Context) (entity.User, error) {
@@ -116,7 +116,6 @@ func (u *UserService) GetUser(ctx *gin.Context) (entity.User, error) {
 func (u *UserService) GetUserParam(param model.UserParam) (entity.User, error) {
 	return u.user.GetUserParam(param)
 }
-
 
 func (u *UserService) UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error) {
 	GetUser, err := u.jwtAuth.GetLogin(ctx)

@@ -7,6 +7,7 @@ type Invoice struct {
 	UserID           string `json:"user_id" gorm:"type:varchar(36);not null;"`
 	CourseorSertifID string `json:"item_id" gorm:"type:varchar(36);not null;"`
 	Status           string `json:"status" gorm:"type:varchar(36);not null;"`
+	ItemType         string `json:"item_type" gorm:"type:varchar(36);not null;"`
 }
 
 type PaymentSertif struct {
