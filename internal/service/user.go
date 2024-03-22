@@ -21,7 +21,7 @@ type IUserService interface {
 	UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error)
 	UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (entity.User, error)
 	GetUserCourse(ctx *gin.Context) (entity.User, error)
-	GetUserSertification(ctx *gin.Context) (entity.User, error)
+	GetUserCertification(ctx *gin.Context) (entity.User, error)
 	GetApplication(ctx *gin.Context) (entity.User, error)
 	DeleteUser(id string) error
 }
@@ -164,13 +164,13 @@ func (u *UserService) GetUserCourse(ctx *gin.Context) (entity.User, error) {
 	return u.user.GetUserCourse(model.UserParam{ID: user.ID})
 }
 
-func (u *UserService) GetUserSertification(ctx *gin.Context) (entity.User, error) {
+func (u *UserService) GetUserCertification(ctx *gin.Context) (entity.User, error) {
 	user, err := u.jwtAuth.GetLogin(ctx)
 	if err != nil {
 		return user, err
 	}
 
-	return u.user.GetUserSertification(model.UserParam{ID: user.ID})
+	return u.user.GetUserCertification(model.UserParam{ID: user.ID})
 }
 
 func (u *UserService) GetApplication(ctx *gin.Context) (entity.User, error) {

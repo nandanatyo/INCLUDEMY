@@ -10,8 +10,8 @@ type Repository struct {
 	UserSubcourseRepository     IUserSubcourseRepository
 	JobRepository               IJobRepository
 	ApplicantRepository         IApplicantRepository
-	SertificationRepository     ISertificationRepository
-	SertificationUserRepository ISertificationUserRepository
+	CertificationRepository     ICertificationRepository
+	CertificationUserRepository ICertificationUserRepository
 	InvoiceRepository           IInvoiceRepository
 }
 
@@ -24,8 +24,8 @@ func NewRepository(db *gorm.DB) *Repository {
 		UserSubcourseRepository:     NewUserSubcourseRepository(db),
 		JobRepository:               NewJobRepository(db),
 		ApplicantRepository:         NewApplicantRepository(db),
-		SertificationRepository:     NewSertificationRepository(db),
-		SertificationUserRepository: NewSertificationUserRepository(db),
+		CertificationRepository:     NewCertificationRepository(db),
+		CertificationUserRepository: NewCertificationUserRepository(db),
 		InvoiceRepository:           NewInvoiceRepository(db),
 	}
 }

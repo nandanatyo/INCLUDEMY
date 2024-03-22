@@ -15,8 +15,8 @@ type Service struct {
 	UserSubcourseService     IUserSubcourseService
 	JobService               IJobService
 	ApplicantService         IApplicantService
-	SertificationService     ISertificationService
-	SertificationUserService ISertificationUserService
+	CertificationService     ICertificationService
+	CertificationUserService ICertificationUserService
 	PaymentService           IPaymentService
 }
 
@@ -29,8 +29,8 @@ func NewService(repository *repository.Repository, bcrypt bcrypt.Interface, jwt 
 		UserSubcourseService:     NewUserSubcourseService(repository.UserSubcourseRepository, repository.UserRepository, repository.SubcourseRepository, jwt),
 		JobService:               NewJobService(repository.JobRepository, supabase),
 		ApplicantService:         NewApplicantService(repository.ApplicantRepository, repository.JobRepository, repository.UserRepository, supabase),
-		SertificationService:     NewSertificationService(repository.SertificationRepository, supabase),
-		SertificationUserService: NewSertificationUserService(repository.SertificationRepository, repository.UserRepository, repository.SertificationUserRepository, jwt),
-		PaymentService:           NewPaymentService(repository.InvoiceRepository, repository.UserRepository, repository.CourseRepository, repository.SertificationRepository, jwt, repository.UserJoinRepository, repository.SertificationUserRepository),
+		CertificationService:     NewCertificationService(repository.CertificationRepository, supabase),
+		CertificationUserService: NewCertificationUserService(repository.CertificationRepository, repository.UserRepository, repository.CertificationUserRepository, jwt),
+		PaymentService:           NewPaymentService(repository.InvoiceRepository, repository.UserRepository, repository.CourseRepository, repository.CertificationRepository, jwt, repository.UserJoinRepository, repository.CertificationUserRepository),
 	}
 }

@@ -29,7 +29,7 @@ func (r *Rest) CreateJob(ctx *gin.Context) {
 
 func (r *Rest) DeleteJob(ctx *gin.Context) {
 	jobID := ctx.Param("id")
-	err := r.service.SertificationService.DeleteSertification(jobID)
+	err := r.service.JobService.DeleteJob(jobID)
 	if err != nil {
 		response.Error(ctx, http.StatusNotFound, "Failed to delete job", err)
 		return

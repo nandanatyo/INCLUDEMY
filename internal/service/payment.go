@@ -23,17 +23,17 @@ type PaymentService struct {
 	User              repository.IUserRepository
 	Course            repository.ICourseRepository
 	CourseUser        repository.IUserJoinRepository
-	UserCertification repository.ISertificationUserRepository
-	Sertif            repository.ISertificationRepository
+	UserCertification repository.ICertificationUserRepository
+	Certif            repository.ICertificationRepository
 	jwt               jwt.Interface
 }
 
-func NewPaymentService(invoice repository.IInvoiceRepository, user repository.IUserRepository, course repository.ICourseRepository, sertif repository.ISertificationRepository, jwt jwt.Interface, courseuser repository.IUserJoinRepository, certifuser repository.ISertificationUserRepository) *PaymentService {
+func NewPaymentService(invoice repository.IInvoiceRepository, user repository.IUserRepository, course repository.ICourseRepository, certif repository.ICertificationRepository, jwt jwt.Interface, courseuser repository.IUserJoinRepository, certifuser repository.ICertificationUserRepository) *PaymentService {
 	return &PaymentService{
 		Invoice:           invoice,
 		User:              user,
 		Course:            course,
-		Sertif:            sertif,
+		Certif:            certif,
 		jwt:               jwt,
 		CourseUser:        courseuser,
 		UserCertification: certifuser,
@@ -57,12 +57,12 @@ func (p *PaymentService) GetPaymentCourse(ctx *gin.Context, param *model.Payment
 		}
 		price = course.Price
 		itemID = param.ItemID.String()
-	case "sertif":
-		sertif, err := p.Sertif.GetSertificationByID(param.ItemID.String())
+	case "certif":
+		certif, err := p.Certif.GetCertificationByID(param.ItemID.String())
 		if err != nil {
 			return model.PaymentResponse{}, err
 		}
-		price = int64(sertif.Price)
+		price = int64(certif.Price)
 		itemID = param.ItemID.String()
 	default:
 		return model.PaymentResponse{}, errors.New("invalid item type")
@@ -83,7 +83,7 @@ func (p *PaymentService) GetPaymentCourse(ctx *gin.Context, param *model.Payment
 	_, err = p.Invoice.CreateInvoice(&entity.Invoice{
 		OrderID:          payReq.TransactionDetails.OrderID,
 		UserID:           user.ID.String(),
-		CourseorSertifID: itemID,
+		CourseorCertifID: itemID,
 		Status:           "pending",
 		ItemType:         param.ItemType,
 	})
@@ -116,13 +116,13 @@ func (p *PaymentService) CallbackCourse(notificationPayload map[string]interface
 				p.CourseUser.CreateUserJoin(&entity.UserJoinCourse{
 					ID:       uuid.New(),
 					UserID:   uuid.MustParse(invoice.UserID),
-					CourseID: uuid.MustParse(invoice.CourseorSertifID),
+					CourseID: uuid.MustParse(invoice.CourseorCertifID),
 				})
-			} else if invoice.ItemType == "sertif" {
-				p.UserCertification.CreateSertificationUser(&entity.SertificationUser{
+			} else if invoice.ItemType == "certif" {
+				p.UserCertification.CreateCertificationUser(&entity.CertificationUser{
 					ID:              uuid.New(),
 					UserID:          uuid.MustParse(invoice.UserID),
-					SertificationID: uuid.MustParse(invoice.CourseorSertifID),
+					CertificationID: uuid.MustParse(invoice.CourseorCertifID),
 					Pass:            false,
 				})
 			}
@@ -137,13 +137,13 @@ func (p *PaymentService) CallbackCourse(notificationPayload map[string]interface
 			p.CourseUser.CreateUserJoin(&entity.UserJoinCourse{
 				ID:       uuid.New(),
 				UserID:   uuid.MustParse(invoice.UserID),
-				CourseID: uuid.MustParse(invoice.CourseorSertifID),
+				CourseID: uuid.MustParse(invoice.CourseorCertifID),
 			})
-		} else if invoice.ItemType == "sertif" {
-			p.UserCertification.CreateSertificationUser(&entity.SertificationUser{
+		} else if invoice.ItemType == "certif" {
+			p.UserCertification.CreateCertificationUser(&entity.CertificationUser{
 				ID:              uuid.New(),
 				UserID:          uuid.MustParse(invoice.UserID),
-				SertificationID: uuid.MustParse(invoice.CourseorSertifID),
+				CertificationID: uuid.MustParse(invoice.CourseorCertifID),
 				Pass:            false,
 			})
 

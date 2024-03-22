@@ -24,5 +24,4 @@ type Course struct {
 	CreatedAt      time.Time        `json:"createdAt" gorm:"autoCreateTime"`
 	UpdatedAt      time.Time        `json:"updatedAt" gorm:"autoUpdateTime"`
 	UserJoinCourse []UserJoinCourse `gorm:"foreignKey:CourseID;references:ID"`
-	OrderCourse    []OrderCourse    `json:"order_course" gorm:"foreignKey:CourseID;references:ID"`
 }

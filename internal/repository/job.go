@@ -30,7 +30,7 @@ func NewJobRepository(db *gorm.DB) IJobRepository {
 
 func (jr *JobRepository) CreateJob(job *entity.Job) (*entity.Job, error) { //OnlyAdmin
 	if err := jr.db.Debug().Create(job).Error; err != nil {
-		return nil, errors.New("Repository: Failed to create course")
+		return nil, errors.New("Repository: Failed to create job")
 	}
 	return job, nil
 }
@@ -38,7 +38,7 @@ func (jr *JobRepository) CreateJob(job *entity.Job) (*entity.Job, error) { //Onl
 func (jr *JobRepository) GetJobByID(id string) (*entity.Job, error) {
 	var job entity.Job
 	if err := jr.db.Debug().Where("id = ?", id).First(&job).Error; err != nil {
-		return nil, errors.New("Repository: Course not found")
+		return nil, errors.New("Repository: Job not found")
 	}
 	return &job, nil
 }
@@ -46,7 +46,7 @@ func (jr *JobRepository) GetJobByID(id string) (*entity.Job, error) {
 func (jr *JobRepository) GetJobByName(job_name string) ([]*entity.Job, error) {
 	var job []*entity.Job
 	if err := jr.db.Debug().Where("job_name LIKE ?", "%"+job_name+"%").Find(&job).Error; err != nil {
-		return nil, errors.New("Repository: Course not found")
+		return nil, errors.New("Repository: Job not found")
 	}
 	return job, nil
 }
@@ -54,7 +54,7 @@ func (jr *JobRepository) GetJobByName(job_name string) ([]*entity.Job, error) {
 func (jr *JobRepository) GetJobByField(field string) ([]*entity.Job, error) {
 	var job []*entity.Job
 	if err := jr.db.Debug().Where("field LIKE ?", "%"+field+"%").Find(&job).Error; err != nil {
-		return nil, errors.New("Repository: Course not found")
+		return nil, errors.New("Repository: Job not found")
 	}
 	return job, nil
 }
@@ -62,7 +62,7 @@ func (jr *JobRepository) GetJobByField(field string) ([]*entity.Job, error) {
 func (jr *JobRepository) GetJobByTags(tags string) ([]*entity.Job, error) {
 	var job []*entity.Job
 	if err := jr.db.Debug().Where("tags LIKE ?", "%"+tags+"%").Find(&job).Error; err != nil {
-		return nil, errors.New("Repository: Course not found")
+		return nil, errors.New("Repository: Job not found")
 	}
 	return job, nil
 }
@@ -70,14 +70,14 @@ func (jr *JobRepository) GetJobByTags(tags string) ([]*entity.Job, error) {
 func (jr *JobRepository) GetJobByDissability(dissability string) ([]*entity.Job, error) {
 	var job []*entity.Job
 	if err := jr.db.Debug().Where("dissability LIKE ?", "%"+dissability+"%").Find(&job).Error; err != nil {
-		return nil, errors.New("Repository: Course not found")
+		return nil, errors.New("Repository: Job not found")
 	}
 	return job, nil
 }
 
 func (jr *JobRepository) DeleteJob(id string) error {
 	if err := jr.db.Debug().Where("id = ?", id).Delete(&entity.Job{}).Error; err != nil {
-		return errors.New("Repository: Failed to delete sertification")
+		return errors.New("Repository: Failed to delete job")
 	}
 	return nil
 }

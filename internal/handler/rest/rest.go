@@ -61,17 +61,17 @@ func (r *Rest) MountEndpoints() {
 	admin.DELETE("/delete-user-join-course/:id", r.DeleteUserJoinCourse)             //menghapus user join Course
 	admin.GET("/user/subkursus-on-one-course/:id", r.GetUserSubCourseOnOneCourse)    //melihat subCourse yang dimiliki user, multiple return
 
-	//Sertification
-	search.GET("/sertification/", r.GetSertificationByTitleOrID) //melihat sertification berdasarkan id atau title
+	//Certification
+	search.GET("/certification/", r.GetCertificationByTitleOrID) //melihat certification berdasarkan id atau title
 
-	user.POST("/create-sertification-user", r.CreatSertificationUser) //user registrasi ke sertification
-	user.GET("/sertification", r.GetUserSertification)                //mendapatkan sertification yang diregistrasi user
+	user.POST("/create-certification-user", r.CreateCertificationUser) //user registrasi ke certification
+	user.GET("/certification", r.GetUserCertification)                //mendapatkan certification yang diregistrasi user
 
-	admin.POST("/create-sertification", r.CreateSertification)                //membuat sertification
-	admin.DELETE("/delete-sertification/:id", r.DeleteSertification)          //menghapus sertification
-	admin.PATCH("/update-sertification/:id", r.UpdateSertification)           //mengupdate sertification
-	admin.POST("/create-sertification/upload-file", r.UploadSertifPhoto)      //upload file sertification
-	admin.DELETE("/delete-sertification-user/:id", r.DeleteSertificationUser) //menghapus sertification user
+	admin.POST("/create-certification", r.CreateCertification)                //membuat certification
+	admin.DELETE("/delete-certification/:id", r.DeleteCertification)          //menghapus certification
+	admin.PATCH("/update-certification/:id", r.UpdateCertification)           //mengupdate certification
+	admin.POST("/create-certification/upload-file", r.UploadCertifPhoto)      //upload file certification
+	admin.DELETE("/delete-certification-user/:id", r.DeleteCertificationUser) //menghapus certification user
 
 	//ApplyJob
 	search.GET("/job/", r.GetJobByAny) //melihat job berdasarkan id atau title

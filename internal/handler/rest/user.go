@@ -94,13 +94,13 @@ func (r *Rest) GetUserCourse(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Success to get user's course", user)
 }
 
-func (r *Rest) GetUserSertification(ctx *gin.Context) {
-	user, err := r.service.UserService.GetUserSertification(ctx)
+func (r *Rest) GetUserCertification(ctx *gin.Context) {
+	user, err := r.service.UserService.GetUserCertification(ctx)
 	if err != nil {
-		response.Error(ctx, http.StatusInternalServerError, "Failed to get user's sertification", err)
+		response.Error(ctx, http.StatusInternalServerError, "Failed to get user's certification", err)
 		return
 	}
-	response.Success(ctx, http.StatusOK, "Success to get user's sertification", user)
+	response.Success(ctx, http.StatusOK, "Success to get user's certification", user)
 }
 
 func (r *Rest) GetUserApplication(ctx *gin.Context) {

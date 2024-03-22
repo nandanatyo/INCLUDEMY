@@ -15,7 +15,7 @@ type IUserRepository interface {
 	GetUserParam(param model.UserParam) (entity.User, error)
 	UpdateUser(modifyUser *model.UserReq, id string) (*entity.User, error)
 	GetUserCourse(param model.UserParam) (entity.User, error)
-	GetUserSertification(param model.UserParam) (entity.User, error)
+	GetUserCertification(param model.UserParam) (entity.User, error)
 	GetUserApplication(param model.UserParam) (entity.User, error)
 	DeleteUser(id string) error
 }
@@ -65,9 +65,9 @@ func (u *UserRepository) GetUserCourse(param model.UserParam) (entity.User, erro
 	return user, nil
 }
 
-func (u *UserRepository) GetUserSertification(param model.UserParam) (entity.User, error) {
+func (u *UserRepository) GetUserCertification(param model.UserParam) (entity.User, error) {
 	user := entity.User{}
-	err := u.db.Debug().Where(&param).Preload("SertificationUser").First(&user).Error
+	err := u.db.Debug().Where(&param).Preload("CertificationUser").First(&user).Error
 
 	if err != nil {
 		return user, err

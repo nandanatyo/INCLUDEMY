@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type SertificationReq struct {
+type CertificationReq struct {
 	Title       string `json:"title" gorm:"type:varchar(255);not null;" binding:"required"`
 	Creator     string `json:"creator" gorm:"type:varchar(255);not null;" binding:"required"`
 	About       string `json:"about" gorm:"type:varchar(255);not null;" binding:"required"`
@@ -20,7 +20,7 @@ type SertificationReq struct {
 	Price       int    `json:"price" gorm:"type:int;not null;" binding:"required"`
 }
 
-type SertifSearch struct {
+type CertifSearch struct {
 	ID          uuid.UUID `json:"id"`
 	Title       string    `json:"title"`
 	Tags        string    `json:"tags"`
@@ -28,11 +28,11 @@ type SertifSearch struct {
 	Dissability string    `json:"dissability"`
 }
 
-type SertifPost struct {
+type CertifPost struct {
 	ID   uuid.UUID             `json:"id"`
 	File *multipart.FileHeader `json:"file"`
 }
 
-type SertificationGet struct {
-	SertifID uuid.UUID `json:"sertif_id" binding:"required"`
+type CertificationGet struct {
+	CertifID uuid.UUID `json:"certif_id" binding:"required"`
 }

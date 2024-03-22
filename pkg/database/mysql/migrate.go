@@ -15,12 +15,12 @@ func Migrate(db *gorm.DB) error {
 		&entity.UserJoinCourse{},
 		&entity.Job{},
 		&entity.Applicant{},
-		&entity.Sertification{},
-		&entity.SertificationUser{},
+		&entity.Certification{},
+		&entity.CertificationUser{},
 		&entity.JobFile{},
 		&entity.ApplicantFile{},
 		&entity.PaymentCourse{},
-		&entity.PaymentSertif{},
+		&entity.PaymentCertif{},
 		&entity.Invoice{},
 	); err != nil {
 		return err
