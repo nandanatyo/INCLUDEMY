@@ -15,7 +15,7 @@ import (
 type ISubcourseService interface {
 	CreateSubcourse(subcourseReq *model.CreateSubcourse) (*entity.Subcourse, error)
 	GetCourse(param model.SubcourseParam) (entity.Subcourse, error)
-	UploadSubcourseFile(param model.UploadFile) (entity.Subcourse, error)
+	UploadSubcourseFile(param model.UploadFile) (*entity.Subcourse, error)
 	GetSubcourseByID(id string) (*entity.Subcourse, error)
 	UpdateSubcourse(id string, modifySub *model.SubcourseParam) (*entity.Subcourse, error)
 	DeleteSubcourse(id string) error
@@ -61,16 +61,16 @@ func (scs *SubcourseService) GetCourse(param model.SubcourseParam) (entity.Subco
 	return scs.SubcourseRepository.GetSubcourse(param)
 }
 
-func (scs *SubcourseService) UploadSubcourseFile(param model.UploadFile) (entity.Subcourse, error) {
+func (scs *SubcourseService) UploadSubcourseFile(param model.UploadFile) (*entity.Subcourse, error) {
 	sub, err := scs.SubcourseRepository.GetSubcourse(model.SubcourseParam{ID: param.SubcourseID})
 	if err != nil {
-		return sub, errors.New("Service: Subcourse not found")
+		return nil, errors.New("Service: Subcourse not found")
 	}
 
 	if sub.VideoLink != "" {
 		err := scs.supabase.Delete(sub.VideoLink)
 		if err != nil {
-			return sub, errors.New("Service: Failed to delete previous file")
+			return nil, errors.New("Service: Failed to delete previous file")
 		}
 	}
 
@@ -78,15 +78,15 @@ func (scs *SubcourseService) UploadSubcourseFile(param model.UploadFile) (entity
 
 	link, err := scs.supabase.UploadFile(param.File)
 	if err != nil {
-		return sub, errors.New("Service: Failed to upload file")
+		return nil, errors.New("Service: Failed to upload file")
 	}
 
-	_, err = scs.SubcourseRepository.UpdateSubcourse(&model.SubcourseParam{
+	subUp, err := scs.SubcourseRepository.UpdateSubcourse(&model.SubcourseParam{
 		VideoLink: link}, sub.ID.String())
 	if err != nil {
-		return sub, errors.New("Service: Failed to update subcourse")
+		return nil, errors.New("Service: Failed to update subcourse")
 	}
-	return sub, nil
+	return subUp, nil
 }
 
 func (scs *SubcourseService) GetSubcourseByID(id string) (*entity.Subcourse, error) {

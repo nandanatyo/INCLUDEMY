@@ -13,11 +13,12 @@ import (
 	"log"
 )
 
-func main() {
-
+func init(){
 	config.LoadEnvirontment()
 	config.LoadMidtransConfig()
+}
 
+func main() {
 	db := mysql.ConnectDatabase()
 	err := mysql.Migrate(db)
 	if err != nil {

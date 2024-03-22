@@ -5,7 +5,9 @@ import (
 	"includemy/internal/service"
 	"includemy/pkg/middleware"
 	"os"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,6 +26,16 @@ func NewRest(service *service.Service, middleware middleware.Interface) *Rest {
 }
 
 func (r *Rest) MountEndpoints() {
+	r.router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
+		AllowCredentials: true,
+
+		MaxAge: 12 * time.Hour,
+	}))
+
 	r.router.Use(r.middleware.Timeout())
 	user := r.router.Group("/user", r.middleware.AuthenticateUser)
 	profile := user.Group("/profile", r.middleware.AuthenticateUser)
@@ -65,7 +77,7 @@ func (r *Rest) MountEndpoints() {
 	search.GET("/certification/", r.GetCertificationByTitleOrID) //melihat certification berdasarkan id atau title
 
 	user.POST("/create-certification-user", r.CreateCertificationUser) //user registrasi ke certification
-	user.GET("/certification", r.GetUserCertification)                 //mendapatkan certification yang diregistrasi user
+	user.GET("/certification", r.GetUserCertification)                //mendapatkan certification yang diregistrasi user
 
 	admin.POST("/create-certification", r.CreateCertification)                //membuat certification
 	admin.DELETE("/delete-certification/:id", r.DeleteCertification)          //menghapus certification

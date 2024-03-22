@@ -11,6 +11,7 @@ type Interface interface {
 	Timeout() gin.HandlerFunc
 	AuthenticateUser(ctx *gin.Context)
 	OnlyAdmin(ctx *gin.Context)
+
 }
 
 type middleware struct {

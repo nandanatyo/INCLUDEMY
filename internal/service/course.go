@@ -21,7 +21,7 @@ type ICourseService interface {
 	DeleteCourse(id string) error
 	GetSubcourseWithinCourse(temp model.CourseGet) (entity.Course, error)
 	UpdateCourse(id string, modifyCourse *model.CourseReq) (*entity.Course, error)
-	UploadCoursePhoto(param model.CoursePhoto) (entity.Course, error)
+	UploadCoursePhoto(param model.CoursePhoto) (*entity.Course, error)
 }
 
 type CourseService struct {
@@ -99,16 +99,16 @@ func (cs *CourseService) UpdateCourse(id string, modifyCourse *model.CourseReq) 
 	return course, nil
 }
 
-func (cs *CourseService) UploadCoursePhoto(param model.CoursePhoto) (entity.Course, error) {
+func (cs *CourseService) UploadCoursePhoto(param model.CoursePhoto) (*entity.Course, error) {
 	course, err := cs.course.GetCourseByID(param.CourseID.String())
 	if err != nil {
-		return *course, errors.New("Service: Course not found")
+		return nil, errors.New("Service: Course not found")
 	}
 
 	if course.PhotoLink != "" {
 		err := cs.supabase.Delete(course.PhotoLink)
 		if err != nil {
-			return *course, errors.New("Service: Failed to delete previous file")
+			return nil, errors.New("Service: Failed to delete previous file")
 		}
 	}
 
@@ -116,15 +116,15 @@ func (cs *CourseService) UploadCoursePhoto(param model.CoursePhoto) (entity.Cour
 
 	link, err := cs.supabase.UploadFile(param.PhotoLink)
 	if err != nil {
-		return *course, errors.New("Service: Failed to upload file")
+		return nil, errors.New("Service: Failed to upload file")
 	}
 
-	course, err = cs.course.UpdateCourse(course.ID.String(), &model.CourseReq{
+	courseUp, err := cs.course.UpdateCourse(course.ID.String(), &model.CourseReq{
 		PhotoLink: link})
 	if err != nil {
-		return *course, errors.New("Service: Failed to update subcourse")
+		return nil, errors.New("Service: Failed to update subcourse")
 	}
-	return *course, nil
+	return courseUp, nil
 }
 
 func (cs *CourseService) DeleteCourse(id string) error {
