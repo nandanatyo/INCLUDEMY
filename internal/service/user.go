@@ -17,6 +17,7 @@ type IUserService interface {
 	Register(param model.UserReq) (entity.User, error)
 	Login(param model.UserLogin) (model.UserLoginResponse, *entity.User, error)
 	GetUser(ctx *gin.Context) (entity.User, error)
+	GetUserParam(param model.UserParam) (entity.User, error)
 	UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error)
 	UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (entity.User, error)
 	GetUserCourse(ctx *gin.Context) (entity.User, error)
@@ -110,6 +111,10 @@ func (u *UserService) GetUser(ctx *gin.Context) (entity.User, error) {
 	}
 
 	return u.user.GetUser(user.ID.String())
+}
+
+func (u *UserService) GetUserParam(param model.UserParam) (entity.User, error) {
+	return u.user.GetUserParam(param)
 }
 
 

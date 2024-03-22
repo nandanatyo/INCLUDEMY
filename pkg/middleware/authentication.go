@@ -29,7 +29,7 @@ func (m *middleware) AuthenticateUser(ctx *gin.Context) {
 		return
 	}
 
-	user, err := m.service.UserService.GetUser(model.UserParam{ID: userId})
+	user, err := m.service.UserService.GetUserParam(model.UserParam{ID: userId})
 	if err != nil {
 		response.Error(ctx, http.StatusUnauthorized, "user not found", err)
 		ctx.Abort()
