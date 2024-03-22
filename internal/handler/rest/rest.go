@@ -77,7 +77,7 @@ func (r *Rest) MountEndpoints() {
 	search.GET("/certification/", r.GetCertificationByTitleOrID) //melihat certification berdasarkan id atau title
 
 	user.POST("/create-certification-user", r.CreateCertificationUser) //user registrasi ke certification
-	user.GET("/certification", r.GetUserCertification)                //mendapatkan certification yang diregistrasi user
+	user.GET("/certification", r.GetUserCertification)                 //mendapatkan certification yang diregistrasi user
 
 	admin.POST("/create-certification", r.CreateCertification)                //membuat certification
 	admin.DELETE("/delete-certification/:id", r.DeleteCertification)          //menghapus certification

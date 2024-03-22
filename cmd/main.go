@@ -13,7 +13,7 @@ import (
 	"log"
 )
 
-func init(){
+func init() {
 	config.LoadEnvirontment()
 	config.LoadMidtransConfig()
 }

@@ -48,7 +48,6 @@ func NewUserService(user repository.IUserRepository, bcrypt bcrypt.Interface, jw
 	}
 }
 
-
 // func sendVerificationEmail(to string, dialer *mail.Dialer, repo *repository.UserRepository) error {
 // 	token, err := GenerateSecureToken(5)
 // 	if err != nil {
@@ -67,7 +66,6 @@ func NewUserService(user repository.IUserRepository, bcrypt bcrypt.Interface, jw
 
 // 	return nil
 // }
-
 
 // func (s *UserService) VerifyUser(token string) error {
 // 	return s.repo.VerifyUser(token)

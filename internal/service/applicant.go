@@ -25,7 +25,7 @@ type ApplicantService struct {
 	jobRepository       repository.IJobRepository
 	user                repository.IUserRepository
 	supabase            supabase.Interface
-	jwt           jwt.Interface
+	jwt                 jwt.Interface
 }
 
 func NewApplicantService(applicantRepository repository.IApplicantRepository, jobRepository repository.IJobRepository, user repository.IUserRepository, supabase supabase.Interface, jwt jwt.Interface) IApplicantService {
@@ -34,7 +34,7 @@ func NewApplicantService(applicantRepository repository.IApplicantRepository, jo
 		jobRepository:       jobRepository,
 		user:                user,
 		supabase:            supabase,
-		jwt: jwt,
+		jwt:                 jwt,
 	}
 }
 
