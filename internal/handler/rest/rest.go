@@ -32,12 +32,11 @@ func (r *Rest) MountEndpoints() {
 
 	//User
 	r.router.POST("/register", r.Register) //register
-	// r.router.POST("/register/goole/login", r.GoogleLogin) //register
-	// r.router.GET(("/google/callback"), r.GoogleCallback) //register
 	r.router.POST("/login", r.Login)             //login
 	r.router.POST("/course/payment", r.Callback) // mendapatkan status payment
 	profile.POST("/upload-photo", r.UploadPhoto) //upload photo profile user
 	profile.POST("/update-user", r.UpdateUser)   //mengupdate profile user
+	profile.GET("/user", r.GetUser)              //melihat profile user
 
 	admin.DELETE("/delete-user/:id", r.DeleteUser) //menghapus user
 

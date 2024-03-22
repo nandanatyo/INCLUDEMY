@@ -19,12 +19,11 @@ func (r *Rest) CreateApplicant(ctx *gin.Context) {
 		return
 	}
 
-	appli, err := r.service.ApplicantService.CreateApplicantService(&param)
+	appli, err := r.service.ApplicantService.CreateApplicantService(ctx, &param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to make application", err)
 		return
 	}
-
 	response.Success(ctx, http.StatusCreated, "Success to make application", appli)
 }
 

@@ -15,8 +15,8 @@ import (
 
 type IUserService interface {
 	Register(param model.UserReq) (entity.User, error)
-	Login(param model.UserLogin) (model.UserLoginResponse, *entity.User , error)
-	GetUser(param model.UserParam) (entity.User, error)
+	Login(param model.UserLogin) (model.UserLoginResponse, *entity.User, error)
+	GetUser(ctx *gin.Context) (entity.User, error)
 	UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error)
 	UploadPhoto(ctx *gin.Context, param model.UploadPhoto) (entity.User, error)
 	GetUserCourse(ctx *gin.Context) (entity.User, error)
@@ -75,13 +75,13 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, *en
 		return result, nil, errors.New("Service: Email or Username is required")
 	}
 
-	user, err := u.user.GetUser(model.UserParam{
+	user, err := u.user.GetUserParam(model.UserParam{
 		Email:    param.Email,
 		Username: param.Username,
 	})
 
 	if err != nil {
-		return result, nil,  errors.New("Service: User not found")
+		return result, nil, errors.New("Service: User not found")
 	}
 
 	err = u.bcrypt.CompareHashAndPassword(user.Password, param.Password)
@@ -100,12 +100,18 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, *en
 	} else {
 		result.Role = "Is an user"
 	}
-	return result, &user , nil
+	return result, &user, nil
 }
 
-func (u *UserService) GetUser(param model.UserParam) (entity.User, error) {
-	return u.user.GetUser(param)
+func (u *UserService) GetUser(ctx *gin.Context) (entity.User, error) {
+	user, err := u.jwtAuth.GetLogin(ctx)
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	return u.user.GetUser(user.ID.String())
 }
+
 
 func (u *UserService) UpdateUser(ctx *gin.Context, param *model.UserReq) (*entity.User, error) {
 	GetUser, err := u.jwtAuth.GetLogin(ctx)

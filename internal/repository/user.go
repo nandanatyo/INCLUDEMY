@@ -11,7 +11,8 @@ import (
 
 type IUserRepository interface {
 	CreateUser(user entity.User) (entity.User, error)
-	GetUser(param model.UserParam) (entity.User, error)
+	GetUser(id string) (entity.User, error)
+	GetUserParam(param model.UserParam) (entity.User, error)
 	UpdateUser(modifyUser *model.UserReq, id string) (*entity.User, error)
 	GetUserCourse(param model.UserParam) (entity.User, error)
 	GetUserSertification(param model.UserParam) (entity.User, error)
@@ -37,11 +38,20 @@ func (u *UserRepository) CreateUser(user entity.User) (entity.User, error) {
 	return user, nil
 }
 
-func (u *UserRepository) GetUser(param model.UserParam) (entity.User, error) {
+func (u *UserRepository) GetUser(id string) (entity.User, error) {
+	user := entity.User{}
+	err := u.db.Debug().Where("id = ?", id).First(&user).Error
+	if err != nil {
+		return user, errors.New("Repository: User not found")
+	}
+	return user, nil
+}
+
+func (u *UserRepository) GetUserParam(param model.UserParam) (entity.User, error) {
 	user := entity.User{}
 	err := u.db.Debug().Where(&param).First(&user).Error
 	if err != nil {
-		return user, errors.New("Repository: User not found")
+		return user, err
 	}
 	return user, nil
 }

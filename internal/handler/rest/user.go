@@ -33,14 +33,14 @@ func (r *Rest) Login(ctx *gin.Context) {
 		return
 	}
 
-	result,user, err := r.service.UserService.Login(param)
+	result, user, err := r.service.UserService.Login(param)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to login", err)
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, result.Token, user)
-	
+	response.Success(ctx, http.StatusOK, "Succes to Login, Token"+result.Token, user)
+
 }
 
 func (r *Rest) UpdateUser(ctx *gin.Context) {
@@ -58,6 +58,15 @@ func (r *Rest) UpdateUser(ctx *gin.Context) {
 	}
 
 	response.Success(ctx, http.StatusOK, "Success to update user", user)
+}
+
+func (r *Rest) GetUser(ctx *gin.Context) {
+	user, err := r.service.UserService.GetUser(ctx)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "Failed to get user", err)
+		return
+	}
+	response.Success(ctx, http.StatusOK, "Success to get user", user)
 }
 
 func (r *Rest) UploadPhoto(ctx *gin.Context) {

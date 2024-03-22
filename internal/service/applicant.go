@@ -9,11 +9,12 @@ import (
 	"includemy/pkg/supabase"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 type IApplicantService interface {
-	CreateApplicantService(param *model.ApplicantReq) (*entity.Applicant, error)
+	CreateApplicantService(ctx *gin.Context, param *model.ApplicantReq) (*entity.Applicant, error) 
 	DeleteApplication(id string) error
 	UploadApplicantFile(param *entity.ParamAppFile) (*entity.ApplicantFile, error)
 }
@@ -34,10 +35,8 @@ func NewApplicantService(applicantRepository repository.IApplicantRepository, jo
 	}
 }
 
-func (as *ApplicantService) CreateApplicantService(param *model.ApplicantReq) (*entity.Applicant, error) {
-	_, err := as.user.GetUser(model.UserParam{
-		ID: param.UserID,
-	})
+func (as *ApplicantService) CreateApplicantService(ctx *gin.Context, param *model.ApplicantReq) (*entity.Applicant, error) {
+	user, err := as.user.GetUser(param.UserID.String())
 	if err != nil {
 		return nil, errors.New("Service: User not found")
 	}
@@ -49,7 +48,7 @@ func (as *ApplicantService) CreateApplicantService(param *model.ApplicantReq) (*
 
 	register := entity.Applicant{
 		ID:      uuid.New(),
-		UserID:  param.UserID,
+		UserID:  user.ID,
 		JobID:   param.JobID,
 		MinWage: param.MinWage,
 		MaxWage: param.MaxWage,
